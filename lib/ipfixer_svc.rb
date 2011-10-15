@@ -9,10 +9,9 @@ PORT = "3000"
 
 
 LOG_FILE = "C:\\it\\logs\\ipfixer.log"
-#LOG_FILE = "C:\\test.log"
 
-LONG_DURATION = 1 # 1000
-STANDARD_INTERVAL = 10
+LONG_DURATION = 1000
+STANDARD_INTERVAL = 500
 
 begin
 	require 'rubygems'
