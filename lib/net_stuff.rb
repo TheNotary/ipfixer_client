@@ -1,7 +1,5 @@
 # You need to wait 300 seconds before using this function
 def get_ip_address
-	#return "192.168.0.1"
-	
 	http_response = Net::HTTP.get_response(URI.parse('http://automation.whatismyip.com/n09230945.asp'))
 	
 	if http_response.code == "200"
@@ -46,13 +44,13 @@ end
 # { "ipfix": { "host":"Host Name", "ip":"192.168.0.1" } }
 def post_ip(host_name, ip)
 	username = 'test'
-	password = 'testing'	
+	password = 'testing'
 	
 	server = IP_FIXER_HUB
 	port = PORT
 	path = '/ipfixes.json'
 
-	http = Net::HTTP.new(server, port) 
+	http = Net::HTTP.new(server, port)
 
 	req = Net::HTTP::Post.new(path)
 	req.content_type = 'application/json'	# specify json
@@ -61,7 +59,12 @@ def post_ip(host_name, ip)
 	req.body = '"ipfix":{ "host":"' + host_name + '", "ip":"' + ip + '" }'
 
 	
-	response = http.start {|http| http.request(req) }
+	begin
+		response = http.start {|http| http.request(req) }
+	rescue
+		my_logger "FAILURE TO POST TO ADDRESS:  Check if address and port are operational."
+		return false
+	end
 
 	my_logger "DEBUGGER:  In Post_IP"
 	my_logger "  host_name:  #{host_name}"
@@ -70,7 +73,7 @@ def post_ip(host_name, ip)
 	my_logger "  Req body:  #{req.body}"
 	
 	return true if response.code == "200"
-	return false
+	return response.code
 end
 
 
