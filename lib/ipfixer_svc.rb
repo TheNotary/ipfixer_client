@@ -37,13 +37,14 @@ begin
 				redo if invalid_ip?(current_ip)
 				
 				if current_ip != last_ip
-					post_success = post_ip(host_name, current_ip)
-					if post_success
+					post_result = post_ip(host_name, current_ip)
+					if post_result == true
 						last_ip = current_ip
 						my_logger "Successfully posted IP to mother server..."
 					else
 						my_logger "ERROR: Problem uploading new IP Address."
 						my_logger "  current_ip: #{current_ip},  last_ip: #{last_ip}, post_result: #{post_result}"
+						sleep LONG_DURATION
 					end
 				else
 					my_logger "#{Time.now}:  No change in IP, #{current_ip}"
