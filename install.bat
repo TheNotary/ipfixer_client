@@ -1,4 +1,8 @@
 @ECHO OFF
+REM Before running, make sure you run "gem install win32-service"
+REM Also, make sure you run it as administrator
+pause
+
 ruby -v|findstr /r "ruby" >nul
 
 IF %errorlevel% == 0 goto beginwork
