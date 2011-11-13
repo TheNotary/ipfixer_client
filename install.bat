@@ -1,6 +1,8 @@
 @ECHO OFF
 REM Before running, make sure you run "gem install win32-service"
 REM Also, make sure you run it as administrator
+REM
+REM Also, don't forget to change the target server and port if it changes.
 pause
 
 ruby -v|findstr /r "ruby" >nul
