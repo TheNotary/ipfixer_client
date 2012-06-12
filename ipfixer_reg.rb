@@ -19,9 +19,7 @@ src_path = File.dirname(__FILE__)
 
 service_to_install = "ipfixer_svc.rb"
 
-target_folder = 'c:\it\ipfixer'
-src_full_path = src_path + '\\lib\\' + service_to_install
-dst_full_path = "#{target_folder}\\#{service_to_install}"
+
 
 # net_stuff.rb too!
 class FileMover
@@ -57,8 +55,23 @@ class FileMover
 	end
 end
 
-fm_ipfixer_svc = FileMover.new(src_full_path, target_folder, dst_full_path)
-fm_ipfixer_svc.deploy!
+
+# this method copies a file from the installer's directory over to the destination install path
+def install_main_lib(target_folder, service_to_install)
+	src_path = File.dirname(__FILE__)
+	
+	src_full_path = src_path + '\\' + service_to_install
+	dst_full_path = "#{target_folder}\\#{service_to_install}"
+
+	fm_ipfixer_svc = FileMover.new(src_full_path, target_folder, dst_full_path)
+	fm_ipfixer_svc.deploy!
+end
+
+
+target_folder = 'c:\it\ipfixer'
+
+install_main_lib(target_folder, "lib\\ipfixer_svc.rb")
+
 
 net_stuff_full_path_src = "#{src_path}\\lib\\net_stuff.rb"
 net_stuff_full_path_dst = "#{target_folder}\\net_stuff.rb"
@@ -67,6 +80,7 @@ fm_net_stuff = FileMover.new(net_stuff_full_path_src, target_folder, net_stuff_f
 fm_net_stuff.deploy!
 
 
+# this string is the argument for the service
 # Example: 'c:\Ruby\bin\ruby.exe -C c:\temp ruby_example_service.rb'
 binary_path = ruby + ' -C ' + target_folder + ' ' + service_to_install
 

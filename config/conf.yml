@@ -1,0 +1,6 @@
+# Place a url here and it will be run every time your dns changes.  Afraid.org for
+# example will let you change the ddns subdomain via a direct url you can place
+# here...
+ddns_update_url: http://www.example.com   
+
+
