@@ -65,7 +65,7 @@ end
 
 def prompt_for_port
 	puts "Please specify a port"
-	puts "[3000]"
+	puts "[80]"
 	input = STDIN.gets.chomp
 	
 	if input == ""
