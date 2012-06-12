@@ -1,0 +1,5 @@
+Ah, the old ipfixer client.  It will install to c:/it/ipfixer
+It basically copies everything in lib/ to that directory.  
+It will register a service with the windows machine it's installed in.  Uninstall will reverse the operation.  
+
+A configuration file can be created... at c:/it/ipfixer/ipfixer.conf
