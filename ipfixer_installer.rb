@@ -75,14 +75,27 @@ def prompt_for_port
 	end
 end
 
+def prompt_for_ddns_url
+	puts "If you have a ddns direct URL to set your IP address, you may specify that now, else hit enter"
+	puts "ex:  www.example.com/ipsetter.php?lkajsdflkjsdf"
+	input = STDIN.gets.chomp
+	
+	if input == ""
+		return nil
+	else
+		return input
+	end
+end
+
 # writes a new yaml file out of the data entered, unless there was no data entered, 
 # in which case it will leave that yaml file untouched and with full comments....
-def update_yml_file(target_folder, target_server, port)
-	return if target_server.nil? and port.nil?
+def update_yml_file(target_folder, target_server, port, ddns_update_url)
+	return if target_server.nil? and port.nil? and ddns_update_url.nil?
 	config = YAML.load_file("C:\\it\\ipfixer\\conf\\config.yml")
 	
 	config["target_server"] = target_server unless target_server.nil?
 	config["port"] = port unless port.nil?
+	config["ddns_update_url"] = ddns_update_url
 	
 	File.open(target_folder + '\conf\config.yml', "w") {|f| f.write(config.to_yaml) }
 end
@@ -202,6 +215,7 @@ install = ARGV.empty? # if you send an argument, no matter what it will trigger 
 if install
 	target_server = prompt_for_target_server
 	port = prompt_for_port
+	ddns_update_url = prompt_for_ddns_url
 	puts "Commencing installation..."
 	
 	@install_files.each do |file|
@@ -209,7 +223,7 @@ if install
 	end
 	create_uninstall_file(target_folder)
 	
-	update_yml_file(target_folder, target_server, port)
+	update_yml_file(target_folder, target_server, port, ddns_update_url)
 	
 	# Create a new service
 	Service.create({
