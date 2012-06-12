@@ -18,7 +18,7 @@ ruby = File.join(Config::CONFIG["bindir"], Config::CONFIG["ruby_install_name"])
 src_path = File.dirname(__FILE__)
 
 service_to_install = "ipfixer_svc.rb"
-@install_files = [ "\\conf\\config.yml", "\\lib\\ipfixer_svc.rb", "\\lib\\net_stuff.rb", "\\lib\\config_stuff.rb" ]
+@install_files = [ "\\conf\\config.yml", "\\lib\\ipfixer_svc.rb", "\\lib\\net_stuff.rb", "\\lib\\config_stuff.rb", "ipfixer_installer.rb" ]
 target_folder = 'c:\it\ipfixer'
 
 def prompt_for_installation_folder
@@ -30,6 +30,12 @@ def prompt_for_installation_folder
 	else
 		target_folder = input
 	end
+end
+
+def write_install_dir_to_registry
+	# I decided not to impliment this because windows in obnoxious now-a-days
+end
+def remove_install_dir_from_registry
 end
 
 def prompt_for_hostname_from_user
@@ -62,7 +68,7 @@ def prompt_for_port
 	input = STDIN.gets
 	
 	if input == "\n"
-		port = 80
+		port = "80"
 	else
 		port = input
 	end
@@ -141,6 +147,8 @@ def delete_installed_files!(target_folder)
 	
 	install_files = @install_files
 	install_files.each do |file|
+		break if file == __FILE__   # make sure it doesn't try to delete itself...
+	
 		full_path = target_folder + file
 		File.delete(full_path) if File.exists?(full_path)
 		
@@ -155,6 +163,25 @@ def is_dir_empty?(dirname)
 	Dir.entries(dirname).join == "..." if Dir.exists?(dirname)
 end
 
+def create_uninstall_file(target_folder)
+	uninstall_script = <<-HERE_DOC
+@ECHO OFF
+echo Removing ipfixer from the services list
+
+sc stop ipfixer_svc
+start /wait ruby ipfixer_installer.rb remove
+
+DEL ipfixer_installer.rb
+
+rem   remove even the uninstall script
+DEL "%~f0"
+
+pause
+	HERE_DOC
+	
+	File.open(target_folder + '\uninstall.bat', 'w') {|f| f.write(uninstall_script) }
+end
+
 
 # this string is the argument for the service
 # Example: 'c:\Ruby\bin\ruby.exe -C c:\temp ruby_example_service.rb'
@@ -166,10 +193,9 @@ if install
 	@install_files.each do |file|
 		install_file(target_folder, file)
 	end
-	# install_file(target_folder, "lib\\ipfixer_svc.rb")
-	# install_file(target_folder, "lib\\net_stuff.rb")
-	# install_file(target_folder, "conf\\config.yml")
-
+	
+	create_uninstall_file(target_folder)
+	
 	# Create a new service
 	Service.create({
 		:service_name => SERVICE_NAME,

@@ -34,7 +34,7 @@ if %errorlevel% == 1060 goto register
 echo " "
 echo #### Removing ipfixer from the services list
 sc stop ipfixer_svc
-ruby ipfixer_reg.rb remove
+ruby ipfixer_installer.rb remove
 
 
 
@@ -43,7 +43,7 @@ ruby ipfixer_reg.rb remove
 echo " "
 echo #### Installing and running ipfixer
 
-ruby ipfixer_reg.rb
+ruby ipfixer_installer.rb
 
 sc start ipfixer_svc
 
