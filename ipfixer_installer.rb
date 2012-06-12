@@ -3,6 +3,7 @@
 # ruby ipfixer_reg.rb will install the service (the other file should be in the .\lib directory)
 # ruby ipfixer_reg.rb anyArgument will uninstall the service
 
+require 'yaml'
 require 'rubygems'
 require 'win32/service'  # gem install win32-service
 require 'rbconfig'
@@ -23,9 +24,9 @@ target_folder = 'c:\it\ipfixer'
 
 def prompt_for_installation_folder
 	puts "Please specify an installation directory, or hit enter for default 'c:\\it\\ipfixer'"
-	input = STDIN.gets
+	input = STDIN.gets.chomp
 
-	if input == "\n"
+	if input == ""
 		target_folder = 'c:\it\ipfixer'
 	else
 		target_folder = input
@@ -33,16 +34,16 @@ def prompt_for_installation_folder
 end
 
 def write_install_dir_to_registry
-	# I decided not to impliment this because windows in obnoxious now-a-days
+	# I decided not to impliment this because windows in obnoxious now-a-days about administration privs
 end
 def remove_install_dir_from_registry
 end
 
 def prompt_for_hostname_from_user
 	puts "Please specify a host name"
-	input = STDIN.gets
+	input = STDIN.gets.chomp
 
-	if input == "\n"
+	if input == ""
 		hostname = "default"
 	else
 		hostname = input
@@ -53,30 +54,39 @@ end
 def prompt_for_target_server
 	puts "Please specify a target server name"
 	puts "[192.168.0.11]"
-	input = STDIN.gets
+	input = STDIN.gets.chomp
 	
-	if input == "\n"
-		target_server = "192.168.0.11"
+	if input == ""
+		return nil
 	else
-		target_server = input
+		return input
 	end
 end
 
 def prompt_for_port
 	puts "Please specify a port"
-	puts "[80]"
-	input = STDIN.gets
+	puts "[3000]"
+	input = STDIN.gets.chomp
 	
-	if input == "\n"
-		port = "80"
+	if input == ""
+		return nil
 	else
-		port = input
+		return input.to_i
 	end
 end
 
-def write_out_yml_file
-	puts "I should write a new yml file based on the input given by the user"
+# writes a new yaml file out of the data entered, unless there was no data entered, 
+# in which case it will leave that yaml file untouched and with full comments....
+def update_yml_file(target_folder, target_server, port)
+	return if target_server.nil? and port.nil?
+	config = YAML.load_file("C:\\it\\ipfixer\\conf\\config.yml")
+	
+	config["target_server"] = target_server unless target_server.nil?
+	config["port"] = port unless port.nil?
+	
+	File.open(target_folder + '\conf\config.yml', "w") {|f| f.write(config.to_yaml) }
 end
+
 
 
 
@@ -190,11 +200,16 @@ binary_path = ruby + ' -C ' + target_folder + '\\lib' + ' ' + "#{service_to_inst
 install = ARGV.empty? # if you send an argument, no matter what it will trigger delete routine
 
 if install
+	target_server = prompt_for_target_server
+	port = prompt_for_port
+	puts "Commencing installation..."
+	
 	@install_files.each do |file|
 		install_file(target_folder, file)
 	end
-	
 	create_uninstall_file(target_folder)
+	
+	update_yml_file(target_folder, target_server, port)
 	
 	# Create a new service
 	Service.create({
