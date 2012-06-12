@@ -12,10 +12,7 @@ config = read_config_file
 IP_FIXER_HUB = config["target_server"] # '192.168.0.11'
 PORT = config["port"].to_s  # "3000"
 IP_LOOKUP_URL = config["ip_lookup_url"] # 'http://automation.whatismyip.com/n09230945.asp'
-
-#IP_FIXER_HUB = '192.168.0.11'
-#PORT = "3000"
-#IP_LOOKUP_URL = 'http://automation.whatismyip.com/n09230945.asp'
+DDNS_UPDATE_URL = config["ddns_update_url"]
 
 LOG_FILE = "C:\\it\\logs\\ipfixer.log"
 
@@ -46,6 +43,8 @@ begin
 				redo if invalid_ip?(current_ip)
 				
 				if current_ip != last_ip
+					tell_ddns_our_new_ip(DDNS_UPDATE_URL) unless DDNS_UPDATE_URL.nil?
+					
 					post_result = post_ip(host_name, current_ip)
 					if post_result == true
 						last_ip = current_ip

@@ -86,3 +86,14 @@ def create_the_log_folder
 	logs_folder = "C:\\it\\logs"
 	FileUtils.mkdir_p(logs_folder) unless File.directory?(logs_folder) 
 end
+
+def tell_ddns_our_new_ip(ddns_update_url)
+	http_response = Net::HTTP.get_response(URI.parse(ddns_update_url))
+	
+	if http_response.code == "200"
+		return true
+	else
+		my_logger "failed to properly tell ddns our new ip..."
+		return false
+	end
+end
