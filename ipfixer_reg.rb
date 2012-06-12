@@ -85,6 +85,7 @@ fm_net_stuff.deploy!
 binary_path = ruby + ' -C ' + target_folder + ' ' + service_to_install
 
 install = ARGV.empty? # if you send an argument, no matter what it will trigger delete routine
+puts "install was #{install}"
 
 if install
   # Create a new service
