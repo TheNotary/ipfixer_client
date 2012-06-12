@@ -3,10 +3,19 @@
 #
 # $ gem install win32-service
 
-# Point this at your hub
-IP_FIXER_HUB = '192.168.0.11'
-PORT = "3000"
+# allows us to read yaml files
+load "config_stuff.rb" # requires 'yaml'
+config = read_config_file
 
+
+# Point this at your hub
+IP_FIXER_HUB = config["target_server"] # '192.168.0.11'
+PORT = config["port"].to_s  # "3000"
+IP_LOOKUP_URL = config["ip_lookup_url"] # 'http://automation.whatismyip.com/n09230945.asp'
+
+#IP_FIXER_HUB = '192.168.0.11'
+#PORT = "3000"
+#IP_LOOKUP_URL = 'http://automation.whatismyip.com/n09230945.asp'
 
 LOG_FILE = "C:\\it\\logs\\ipfixer.log"
 
@@ -33,7 +42,7 @@ begin
 			
 			while running?
 				
-				current_ip = get_ip_address
+				current_ip = get_ip_address(IP_LOOKUP_URL)
 				redo if invalid_ip?(current_ip)
 				
 				if current_ip != last_ip

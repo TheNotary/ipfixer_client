@@ -1,0 +1,18 @@
+########### BASIC ###############
+
+
+target_server: 192.168.0.11
+port: 3000
+
+
+
+
+########### ADVANCED ###############
+
+# Place a url here and it will be run every time your dns changes.  Afraid.org for
+# example will let you change the ddns subdomain via a direct url you can place
+# here...
+ddns_update_url: http://www.example.com/up_my_ip_stored_on_your_server
+
+# You can change which site you use to lookup your IP address
+ip_lookup_url: http://automation.whatismyip.com/n09230945.asp

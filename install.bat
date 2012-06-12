@@ -1,8 +1,8 @@
 @ECHO OFF
-REM Before running, make sure you run "gem install win32-service"
-REM Also, make sure you run it as administrator
-REM
-REM Also, don't forget to change the target server and port if it changes.
+echo Before running, make sure you run "gem install win32-service"
+echo Also, make sure you run it as administrator
+echo " "
+echo Also, don't forget to change the target server and port if it changes.
 pause
 
 ruby -v|findstr /r "ruby" >nul
@@ -31,7 +31,7 @@ if %errorlevel% == 1060 goto register
 
 
 :unregister
-echo
+echo " "
 echo #### Removing ipfixer from the services list
 sc stop ipfixer_svc
 ruby ipfixer_reg.rb remove
@@ -40,7 +40,7 @@ ruby ipfixer_reg.rb remove
 
 
 :register
-echo
+echo " "
 echo #### Installing and running ipfixer
 
 ruby ipfixer_reg.rb
@@ -50,3 +50,4 @@ sc start ipfixer_svc
 
 
 :finished
+pause

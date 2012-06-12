@@ -1,0 +1,3 @@
+add yaml for hostname
+
+fix uninstall script

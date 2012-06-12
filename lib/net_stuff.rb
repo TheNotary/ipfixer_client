@@ -1,6 +1,6 @@
 # You need to wait 300 seconds before using this function
-def get_ip_address
-	http_response = Net::HTTP.get_response(URI.parse('http://automation.whatismyip.com/n09230945.asp'))
+def get_ip_address(ip_lookup_url = 'http://automation.whatismyip.com/n09230945.asp')
+	http_response = Net::HTTP.get_response(URI.parse(ip_lookup_url))
 	
 	if http_response.code == "200"
 		return http_response.body
