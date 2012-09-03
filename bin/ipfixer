@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+
+require 'thor'
+require 'ipfixer_client'
+
+class IpfixerClientRunner < thor
+  default_task :help
+  
+  desc "help", "Explains the gem's usage"
+  def help
+    IpfixerClient.help
+  end
+  
+  desc "install", "Installs the client as a windows service"
+  def install
+    IpfixerClient.install
+  end
+  
+  desc "uninstall", "Uninstalls the windows service"
+  def uninstall
+    IpfixerClient.uninstall
+  end
+  
+  desc "client", "This command should only be used by the windows service which allows the gem to be run"
+  def client
+    IpfixerClient.client_svc
+  end
+end
