@@ -3,4 +3,4 @@ source :rubygems
 
 gem 'win32-service'
 
-
+gem 'rspec'
