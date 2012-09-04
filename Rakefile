@@ -12,6 +12,7 @@ end
 
 RSpec::Core::RakeTask.new(:all) do |spec|
   spec.pattern = 'spec/*/*_spec.rb'
+  spec.rspec_opts = ['--debug']
 end
 
 # this is for running tests that you've marked current...  eg:  it 'should work', :current => true do

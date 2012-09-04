@@ -1,7 +1,7 @@
 require 'ipfixer_client/config_stuff'
 require 'ipfixer_client/net_stuff'
 require 'ipfixer_client/version'
-#require 'ipfixer_client/ipfixer_svc'
+require 'ipfixer_client/ipfixer_svc'
 
 module IpfixerClient
   def self.help
@@ -10,7 +10,8 @@ module IpfixerClient
   end
   
   def self.client_svc
-    
+    debugger
+    DemoDaemon.mainloop
   end
   
 end

@@ -9,4 +9,8 @@ describe "installation/ uninstallation" do
     
   end
   
+  it "should be able to launch teh daemon loop" do
+    # IpfixerClient.client_svc
+  end
+  
 end

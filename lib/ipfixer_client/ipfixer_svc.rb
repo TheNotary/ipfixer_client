@@ -31,8 +31,8 @@ module IpfixerClient
   
   	class DemoDaemon < Daemon
   		
-  		
   		def service_main
+  		  require 'pry'; binding.pry
   			create_the_log_folder
   			host_name = Socket.gethostname
   			last_ip = ''
@@ -69,10 +69,10 @@ module IpfixerClient
   		end
   	end
   
-  	DemoDaemon.mainloop
+  	
   rescue Exception => err
-      File.open(LOG_FILE,'a+'){ |f| f.puts " ***Daemon failure #{Time.now} err=#{err} " }
-      raise
+    File.open(LOG_FILE,'a+'){ |f| f.puts " ***Daemon failure #{Time.now} err=#{err} " }
+    raise
   end
 
 end
