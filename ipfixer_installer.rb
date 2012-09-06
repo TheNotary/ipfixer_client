@@ -9,8 +9,8 @@ require 'win32/service'  # gem install win32-service
 require 'rbconfig'
 require 'fileutils'
 
-
 include Win32
+
 
 SERVICE_NAME = 'ipfixer_svc'
 SERVICE_DESC = 'A service that helps keep track of remote infrastructure.'
@@ -21,6 +21,7 @@ src_path = File.dirname(__FILE__)
 service_to_install = "ipfixer_svc.rb"
 @install_files = [ "\\conf\\config.yml", "\\lib\\ipfixer_svc.rb", "\\lib\\net_stuff.rb", "\\lib\\config_stuff.rb", "ipfixer_installer.rb" ]
 target_folder = 'c:\it\ipfixer'
+
 
 def prompt_for_installation_folder
 	puts "Please specify an installation directory, or hit enter for default 'c:\\it\\ipfixer'"
@@ -34,8 +35,9 @@ def prompt_for_installation_folder
 end
 
 def write_install_dir_to_registry
-	# I decided not to impliment this because windows in obnoxious now-a-days about administration privs
+	# I decided not to impliment this because windows is obnoxious now-a-days about administration privs
 end
+
 def remove_install_dir_from_registry
 end
 
@@ -204,6 +206,9 @@ pause
 	
 	File.open(target_folder + '\uninstall.bat', 'w') {|f| f.write(uninstall_script) }
 end
+
+
+
 
 
 # this string is the argument for the service

@@ -21,8 +21,8 @@ class IpfixerClientRunner < thor
     IpfixerClient.uninstall
   end
   
-  desc "client", "This command should only be used by the windows service which allows the gem to be run"
-  def client
+  desc "client_svc", "This command should only be used by the windows service which allows the gem to be run"
+  def client_svc
     IpfixerClient.client_svc
   end
 end
