@@ -14,13 +14,13 @@ module IpfixerClient
   end
   
   def self.client_svc
-    my_logger "trying to start"
+    my_logger "trying to install"
     DemoDaemon.mainloop
   end
   
   def self.install
-    i = Installer.new
-    i.install
+    i = Installer.new 
+    i.install 
   end
   
   def self.uninstall

@@ -1,6 +1,6 @@
 module IpfixerClient
   # You need to wait 300 seconds before using this function
-  def get_ip_address(ip_lookup_url)
+  def self.get_ip_address(ip_lookup_url)
   	http_response = Net::HTTP.get_response(URI.parse(ip_lookup_url))
   	
   	if http_response.code == "200"
@@ -13,7 +13,7 @@ module IpfixerClient
   
   # Returns true if the string supplied wasn't actually a valid ip (very low cpu usage testing)
   # >> If it's not a valid IP the thread will sleep for LONG_DURATION
-  def invalid_ip?(ip)
+  def self.invalid_ip?(ip)
   	
   	if ip_malformed?(ip)
   		my_logger "**ERROR:  Recieved an invalid ip."
@@ -27,7 +27,7 @@ module IpfixerClient
   
   
   # Returns true or false depending if the string had 3 decimal points in it
-  def ip_malformed?(ip)
+  def self.ip_malformed?(ip)
   	l1 = ip.length # Get length of IP address
   	l2 = ip.gsub(".", "").length; # remove decimal points and get new length
   	
@@ -43,7 +43,7 @@ module IpfixerClient
   
   # POST /ipfixes
   # { "ipfix": { "host":"Host Name", "ip":"192.168.0.1" } }
-  def post_ip(host_name, ip)
+  def self.post_ip(host_name, ip)
   	username = 'test'
   	password = 'testing'
   	
@@ -78,17 +78,17 @@ module IpfixerClient
   end
   
   
-  def my_logger(text)
+  def self.my_logger(text)
   	File.open(LOG_FILE, "a"){ |f| f.puts text }
   end
   
   
-  def create_the_log_folder
+  def self.create_the_log_folder
   	logs_folder = "C:\\it\\logs"
   	FileUtils.mkdir_p(logs_folder) unless File.directory?(logs_folder) 
   end
   
-  def tell_ddns_our_new_ip(ddns_update_url)
+  def self.tell_ddns_our_new_ip(ddns_update_url)
   	http_response = Net::HTTP.get_response(URI.parse(ddns_update_url))
   	
   	if http_response.code == "200"
