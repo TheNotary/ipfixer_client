@@ -1,3 +1,5 @@
+#require 'pry' # development tool
+
 module IpfixerClient
   # http://stackoverflow.com/questions/163497/running-a-ruby-program-as-a-windows-service
   # Use the register
@@ -32,7 +34,6 @@ module IpfixerClient
   	class DemoDaemon < Daemon
   		
   		def service_main
-  		  require 'pry'; binding.pry
   			create_the_log_folder
   			host_name = Socket.gethostname
   			last_ip = ''

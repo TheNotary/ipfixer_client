@@ -4,6 +4,9 @@ require 'ipfixer_client/version'
 require 'ipfixer_client/installer.rb'
 require 'ipfixer_client/ipfixer_svc'
 
+require 'pry' # development tool
+
+
 module IpfixerClient
   def self.help
     puts "This is ipfixer_client, a little client... see the docs"
@@ -11,7 +14,7 @@ module IpfixerClient
   end
   
   def self.client_svc
-    debugger
+    my_logger "trying to start"
     DemoDaemon.mainloop
   end
   

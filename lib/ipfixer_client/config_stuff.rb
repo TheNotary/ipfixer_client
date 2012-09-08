@@ -2,17 +2,13 @@ module IpfixerClient
   require 'yaml'
   
   def self.get_configuration_settings(config_file_path = "C:\\it\\ipfixer\\conf\\config.yml")
-    
+    return default_config_settings unless File.exists? config_file_path
     config_file = get_config_file config_file_path
     
     conf_contents = config_file.read
     config = YAML.load_file(config_file)
     
-    #require 'pry'; binding.pry
     return config
-
-	  #config = YAML.load_file(config_file)
-	  #return config
   end
   
   def self.get_config_file(file_path)
@@ -21,5 +17,11 @@ module IpfixerClient
     else
       StringIO.new('')
     end
+  end
+  
+  def self.default_config_settings
+    return {'target_server' => "192.168.0.11", 
+      "port" => 80, 
+      "ip_lookup_url" => "http://automation.whatismyip.com/n09230945.asp"}
   end
 end
