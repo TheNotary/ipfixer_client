@@ -34,29 +34,29 @@ module IpfixerClient
   	class DemoDaemon < Daemon
   		
   		def service_main
-  			create_the_log_folder
+  			IpfixerClient.create_the_log_folder
   			host_name = Socket.gethostname
   			last_ip = ''
   			
   			while running?
   				
-  				current_ip = get_ip_address(IP_LOOKUP_URL)
-  				redo if invalid_ip?(current_ip)
+  				current_ip = IpfixerClient.get_ip_address(IP_LOOKUP_URL)
+  				sleep STANDARD_INTERVAL and redo if IpfixerClient.invalid_ip?(current_ip)
   				
   				if current_ip != last_ip
-  					tell_ddns_our_new_ip(DDNS_UPDATE_URL) unless DDNS_UPDATE_URL.nil?
+  					IpfixerClient.tell_ddns_our_new_ip(DDNS_UPDATE_URL) unless DDNS_UPDATE_URL.nil?
   					
-  					post_result = post_ip(host_name, current_ip)
+  					post_result = IpfixerClient.post_ip(host_name, current_ip)
   					if post_result == true
   						last_ip = current_ip
-  						my_logger "Successfully posted IP to mother server..."
+  						IpfixerClient.my_logger "Successfully posted IP to mother server..."
   					else
-  						my_logger "ERROR: Problem uploading new IP Address."
-  						my_logger "  current_ip: #{current_ip},  last_ip: #{last_ip}, post_result: #{post_result}"
+  						IpfixerClient.my_logger "ERROR: Problem uploading new IP Address."
+  						IpfixerClient.my_logger "  current_ip: #{current_ip},  last_ip: #{last_ip}, post_result: #{post_result}"
   						sleep LONG_DURATION
   					end
   				else
-  					my_logger "#{Time.now}:  No change in IP, #{current_ip}"
+  					IpfixerClient.my_logger "#{Time.now}:  No change in IP, #{current_ip}"
   				end
   				
   				#my_logger "Service is running #{Time.now}:  #{host_name}"

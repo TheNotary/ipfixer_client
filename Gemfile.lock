@@ -57,7 +57,6 @@ PLATFORMS
 
 DEPENDENCIES
   debugger
-  guard
   guard-rspec
   ipfixer_client!
   pry

@@ -44,9 +44,20 @@ module IpfixerClient
     
     
     def uninstall(service_name = SERVICE_NAME)
+      # stop the service if it's started
+      # stop if service_started? service_name
+      # if the service is marked for deletion, do nothing here
+      #return if service_marked_for_deletion? service_name
       Service.delete(service_name) if service_installed? service_name
     end
     
+    def start(service_name = SERVICE_NAME)
+      Service.start(service_name)
+    end
+    
+    def stop(service_name = SERVICE_NAME)
+      Service.stop(service_name)
+    end
     
     def create_installation_files(target_folder, target_server = nil, port = nil, ddns_update_url = nil)
       FileUtils.mkdir_p "#{target_folder}/conf"
@@ -69,13 +80,13 @@ module IpfixerClient
     
     # This is how I get the path of the ipfixer script in the bin/ folder
     def get_ipfixer_bin_path
-      Gem.bin_path('ipfixer_client', 'ipfixer')
+      Gem.bin_path('ipfixer_client', 'ipfixer').gsub(/.ipfixer$/,'')
     end
     
     # this string is the argument for the service
     # Example: 'c:\Ruby\bin\ruby.exe -C c:\temp ruby_example_service.rb'
     def construct_service_execution_string(ruby, gem_path)
-      "#{ruby} -C #{gem_path} client_svc"
+      "#{ruby} -C #{gem_path} ipfixer client_svc"
     end
     
     # this method prompts the user for a few pieces of information
@@ -138,8 +149,15 @@ module IpfixerClient
     end
     
     def service_installed?(service_name)
-      return false if `sc query #{service_name}` =~ /FAILED 1060/i
-      true
+      `sc query #{service_name}` =~ /FAILED 1060/i ? false : true
+    end
+    
+    def service_started?(service_name)
+      `sc query #{service_name} | grep STATE` =~ /STOPPED/i ? false : true
+    end
+    
+    def service_marked_for_deletion?(service_name)
+      `sc query #{service_name} | grep STATE` =~ /STOPPED/i ? false : true
     end
     
     # writes a new yaml file out of the data entered, unless there was no data entered, 

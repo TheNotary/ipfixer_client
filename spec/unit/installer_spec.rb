@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'ipfixer_client'
 
 describe "installation/ uninstallation" do
   before :all do
@@ -31,7 +30,7 @@ describe "installation/ uninstallation" do
   it "should install the service into windows and also uninstall it..." do
     @installer.install @virtual_service_name
     windows_service_installed?(@virtual_service_name).should be_true
-    #require 'pry'; binding.pry
+
     @installer.uninstall @virtual_service_name
     windows_service_installed?(@virtual_service_name).should be_false
   end
@@ -52,6 +51,57 @@ describe "installation/ uninstallation" do
     @installer.create_installation_files(@target_folder)
     
     File.exists?(@target_folder+"/conf/config.yml").should be_true
+  end
+  
+  describe "helper methods" do
+    
+    it "should return a valid path" do
+      path = @installer.get_ipfixer_bin_path
+      lambda {
+        FileUtils.cd(path)
+      }.should_not raise_error
+    end
+    
+    
+    describe "when service is uninstalled" do
+      it "should know when the service is not installed" do
+        @installer.service_installed?(@virtual_service_name).should be_false
+      end
+    end
+    
+    describe "when service is installed" do
+      before :each do
+        @installer.install @virtual_service_name
+      end
+      after :each do
+        @installer.uninstall @virtual_service_name
+      end
+      
+      it "should know when the service is installed" do
+        @installer.service_installed?(@virtual_service_name).should be_true
+      end
+      
+      it "should tell us when a service is STOPPED" do
+        @installer.service_started?(@virtual_service_name).should be_false
+      end
+=begin
+      # SOmetimes... this test will fail... it's not predictable...
+      it ".start, .stop, .service_started?" do
+        @installer.start @virtual_service_name
+        @installer.service_started?(@virtual_service_name).should be_true
+        
+        @installer.stop @virtual_service_name
+        # sleep 0.02  # you need to give it a moment to stop...
+        @installer.service_started?(@virtual_service_name).should be_false
+        
+        sleep 0.5  # we need to sleep here so windows services can catch up
+      end
+=end
+      
+    end
+    
+    
+    
   end
   
 end

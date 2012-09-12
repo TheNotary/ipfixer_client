@@ -14,7 +14,6 @@ module IpfixerClient
   # Returns true if the string supplied wasn't actually a valid ip (very low cpu usage testing)
   # >> If it's not a valid IP the thread will sleep for LONG_DURATION
   def self.invalid_ip?(ip)
-  	
   	if ip_malformed?(ip)
   		my_logger "**ERROR:  Recieved an invalid ip."
   		my_logger "  current_ip:  #{current_ip}"
@@ -81,7 +80,6 @@ module IpfixerClient
   def self.my_logger(text)
   	File.open(LOG_FILE, "a"){ |f| f.puts text }
   end
-  
   
   def self.create_the_log_folder
   	logs_folder = "C:\\it\\logs"
