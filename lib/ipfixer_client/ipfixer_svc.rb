@@ -66,7 +66,7 @@ module IpfixerClient
   
   		def service_stop
   			File.open(LOG_FILE, "a"){ |f| f.puts "***Service stopped #{Time.now}" }
-  			exit!
+  			# exit!  # the guy I took the code from might have found the exit! command useful... I can't find a use for it.
   		end
   	end
   

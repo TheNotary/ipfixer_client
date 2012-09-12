@@ -27,7 +27,7 @@ describe "installation/ uninstallation" do
   end
   
   
-  it "should install the service into windows and also uninstall it..." do
+  it "should install the service into windows and also uninstall it...", :current => true do
     @installer.install @virtual_service_name
     windows_service_installed?(@virtual_service_name).should be_true
 

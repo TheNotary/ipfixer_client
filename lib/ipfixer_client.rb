@@ -14,7 +14,6 @@ module IpfixerClient
   end
   
   def self.client_svc
-    my_logger "trying to install"
     DemoDaemon.mainloop
   end
   

@@ -59,10 +59,10 @@ module IpfixerClient
       Service.stop(service_name)
     end
     
-    def create_installation_files(target_folder, target_server = nil, port = nil, ddns_update_url = nil)
+    def create_installation_files(target_folder, config = nil)
       FileUtils.mkdir_p "#{target_folder}/conf"
       FileUtils.cp "#{get_root_of_gem}/conf/config.yml", "#{target_folder}/conf/config.yml"
-      update_yml_file(target_folder, target_server, port, ddns_update_url)
+      update_yml_file(target_folder, config)
     end
     
     def get_root_of_gem
@@ -162,8 +162,13 @@ module IpfixerClient
     
     # writes a new yaml file out of the data entered, unless there was no data entered, 
     # in which case it will leave that yaml file untouched and with full comments....
-    def update_yml_file(target_folder, target_server, port, ddns_update_url)
-      return if target_server.nil? and port.nil? and ddns_update_url.nil?
+    def update_yml_file(target_folder, config)
+      return if config.nil?
+      
+      target_server = config['target_server']
+      port = config['port']
+      ddns_update_url = config['ddns_update_url']
+      
       config = YAML.load_file("C:\\it\\ipfixer\\conf\\config.yml")
       
       config["target_server"] = target_server unless target_server.nil?
