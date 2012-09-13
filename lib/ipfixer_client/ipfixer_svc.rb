@@ -1,5 +1,3 @@
-#require 'pry' # development tool
-
 module IpfixerClient
   # http://stackoverflow.com/questions/163497/running-a-ruby-program-as-a-windows-service
   # Use the register
@@ -12,7 +10,7 @@ module IpfixerClient
   
   
   # Point this at your hub
-  IP_FIXER_HUB = config["target_server"] # '192.168.0.11'
+  IP_FIXER_HUB = config["target_server"].gsub(/^http:\/\//, '')  # '192.168.0.11'
   PORT = config["port"].to_s  # "3000"
   IP_LOOKUP_URL = config["ip_lookup_url"] # 'http://automation.whatismyip.com/n09230945.asp'
   DDNS_UPDATE_URL = config["ddns_update_url"]
@@ -25,7 +23,7 @@ module IpfixerClient
   begin
   	require 'rubygems'
   	require 'win32/daemon'
-  	require "socket"
+  	require 'socket'
   	require 'net/http' 
   	require 'fileutils'
   
@@ -66,7 +64,7 @@ module IpfixerClient
   
   		def service_stop
   			File.open(LOG_FILE, "a"){ |f| f.puts "***Service stopped #{Time.now}" }
-  			# exit!  # the guy I took the code from might have found the exit! command useful... I can't find a use for it.
+  			exit!  # the guy I took the code from might have found the exit! command useful... I can't find a use for it.
   		end
   	end
   
