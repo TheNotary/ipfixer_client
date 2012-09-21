@@ -60,7 +60,7 @@ module IpfixerClient
   
   	
   	begin
-  		response = http.start {|http| http.request(req) }
+  		response = http.start {|htp| htp.request(req) }
   	rescue
   		my_logger "FAILURE TO POST TO ADDRESS:  Check if address and port are operational."
   		return false
