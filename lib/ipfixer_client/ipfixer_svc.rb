@@ -39,8 +39,11 @@ module IpfixerClient
   			while running?
   				
   				current_ip = IpfixerClient.get_ip_address(IP_LOOKUP_URL)
-  				sleep STANDARD_INTERVAL and redo if IpfixerClient.invalid_ip?(current_ip)
-  				
+				if IpfixerClient.invalid_ip?(current_ip)
+					sleep STANDARD_INTERVAL
+					redo 
+  				end
+				
   				if current_ip != last_ip
   					IpfixerClient.tell_ddns_our_new_ip(DDNS_UPDATE_URL) unless DDNS_UPDATE_URL.nil?
   					
