@@ -31,12 +31,12 @@ module IpfixerClient
   	l2 = ip.gsub(".", "").length; # remove decimal points and get new length
   	
   	if l2 - l1  == 3  # were there 3 decimal points?  That means it worked!
-  		did_find_valid_ip = true
+  		is_valid_ip = true
   	else
-  		did_find_valid_ip = false
+  		is_valid_ip = false
   	end
   	
-  	return did_find_valid_ip
+  	return is_valid_ip
   end
   
   
@@ -76,16 +76,6 @@ module IpfixerClient
   	return response.code
   end
   
-  
-  def self.my_logger(text)
-  	File.open(LOG_FILE, "a"){ |f| f.puts text }
-  end
-  
-  def self.create_the_log_folder
-  	logs_folder = "C:\\it\\logs"
-  	FileUtils.mkdir_p(logs_folder) unless File.directory?(logs_folder) 
-  end
-  
   def self.tell_ddns_our_new_ip(ddns_update_url)
   	http_response = Net::HTTP.get_response(URI.parse(ddns_update_url))
   	
@@ -95,6 +85,20 @@ module IpfixerClient
   		my_logger "failed to properly tell ddns our new ip..."
   		return false
   	end
+  end
+
+  
+  
+  
+################## This stuff should be split off into another file named "logger_stuff" or something...
+  
+  def self.my_logger(text)
+  	File.open(LOG_FILE, "a"){ |f| f.puts text }
+  end
+  
+  def self.create_the_log_folder
+  	logs_folder = "C:\\it\\logs"
+  	FileUtils.mkdir_p(logs_folder) unless File.directory?(logs_folder) 
   end
   
 end
