@@ -165,6 +165,7 @@ module IpfixerClient
     def update_yml_file(target_folder, config)
       return if config.nil?
       
+	  
       target_server = config['target_server']
       port = config['port']
       ddns_update_url = config['ddns_update_url']
@@ -173,7 +174,7 @@ module IpfixerClient
       
       config["target_server"] = target_server unless target_server.nil?
       config["port"] = port unless port.nil?
-      config["ddns_update_url"] = ddns_update_url
+      config["ddns_update_url"] = ddns_update_url unless ddns_update_url.nil?
       
       File.open(target_folder + '\conf\config.yml', "w") {|f| f.write(config.to_yaml) }
     end
