@@ -8,7 +8,6 @@ class IpfixerClientRunner < Thor
   
   desc "help", "Explains the gem's usage"
   def help
-  	puts "you got in thor at least"
     IpfixerClient.help
   end
   
