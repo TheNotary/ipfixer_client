@@ -77,8 +77,13 @@ module IpfixerClient
   end
   
   def self.tell_ddns_our_new_ip(ddns_update_url)
-  	http_response = Net::HTTP.get_response(URI.parse(ddns_update_url))
-  	
+	begin
+		http_response = Net::HTTP.get_response(URI.parse(ddns_update_url))
+  	rescue
+		my_logger "Exception occured whil trying to tell_ddns_our_new_ip..."
+		my_logger "Url was #{ddns_update_url}"
+	end
+	
   	if http_response.code == "200"
   		return true
   	else
