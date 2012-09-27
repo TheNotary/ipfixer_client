@@ -4,9 +4,6 @@ require 'ipfixer_client/version'
 require 'ipfixer_client/installer.rb'
 require 'ipfixer_client/ipfixer_svc'
 
-require 'pry' # development tool
-
-
 module IpfixerClient
   def self.help
     puts "This is ipfixer_client, a little client... see the docs"
