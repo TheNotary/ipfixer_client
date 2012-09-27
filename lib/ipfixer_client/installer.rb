@@ -96,8 +96,8 @@ module IpfixerClient
       ddns_update_url = prompt_for_ddns_url
       
       config = {'target_server' => target_server, 
-        "port" => port, 
-        "ip_lookup_url" => ddns_update_url}
+        'port' => port, 
+        'ddns_update_url' => ddns_update_url}
       return config
     end
     
@@ -172,9 +172,9 @@ module IpfixerClient
       
       config = YAML.load_file("C:\\it\\ipfixer\\conf\\config.yml")
       
-      config["target_server"] = target_server unless target_server.nil?
-      config["port"] = port unless port.nil?
-      config["ddns_update_url"] = ddns_update_url unless ddns_update_url.nil?
+      config['target_server'] = target_server unless target_server.nil?
+      config['port'] = port unless port.nil?
+      config['ddns_update_url'] = ddns_update_url unless ddns_update_url.nil?
       
       File.open(target_folder + '\conf\config.yml', "w") {|f| f.write(config.to_yaml) }
     end
