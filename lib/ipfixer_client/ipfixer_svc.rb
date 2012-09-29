@@ -73,6 +73,7 @@ module IpfixerClient
   
   	
   rescue Exception => err
+    IpfixerClient.my_logger "I ACTUALLY HAD A DAEMON ERROR!!! err=#{err}"
     File.open(LOG_FILE,'a+'){ |f| f.puts " ***Daemon failure #{Time.now} err=#{err} " }
     raise
   end
