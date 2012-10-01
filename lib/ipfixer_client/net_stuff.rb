@@ -3,9 +3,10 @@ module IpfixerClient
   def self.get_ip_address(ip_lookup_url)
     begin
   	  http_response = Net::HTTP.get_response(URI.parse(ip_lookup_url))
-  	rescue
+  	rescue Exception => e 
 	  my_logger "**ERROR:  Something went wrong trying to get current IP Address"
 	  my_logger "ip_lookup_url: #{ip_lookup_url}"
+	  my_logger "Exception:  #{e.message}"
     end
 	
 	
