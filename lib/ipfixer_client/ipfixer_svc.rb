@@ -10,10 +10,10 @@ module IpfixerClient
   
   
   # Point this at your hub
-  IP_FIXER_HUB = config["target_server"].gsub(/^http:\/\//, '').dup  # '192.168.0.11'
-  PORT = config["port"].to_s.dup  # "3000"
-  IP_LOOKUP_URL = config["ip_lookup_url"].dup # 'http://automation.whatismyip.com/n09230945.asp'
-  DDNS_UPDATE_URL = config["ddns_update_url"].dup
+  IP_FIXER_HUB = config["target_server"].gsub(/^http:\/\//, '').dup unless config["target_server"].nil?  # '192.168.0.11'
+  PORT = config["port"].to_s.dup unless config["port"].nil?  # "3000"
+  IP_LOOKUP_URL = config["ip_lookup_url"].dup unless config["ip_lookup_url"].nil?  # 'http://automation.whatismyip.com/n09230945.asp'
+  DDNS_UPDATE_URL = config["ddns_update_url"].dup unless config["ddns_update_url"].nil?
   
   LOG_FILE = "C:\\it\\logs\\ipfixer.log"
   
