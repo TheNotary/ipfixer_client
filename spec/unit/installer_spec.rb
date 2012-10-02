@@ -28,7 +28,7 @@ describe "installation/ uninstallation" do
   
   
   it "should install the service into windows and also uninstall it...", :current => true do
-    @installer.install @virtual_service_name
+    @installer.install @virtual_service_name, @target_folder
     windows_service_installed?(@virtual_service_name).should be_true
 
     @installer.uninstall @virtual_service_name
@@ -36,7 +36,7 @@ describe "installation/ uninstallation" do
   end
   
   it "should setup the log folder and files" do
-    @installer.install @virtual_service_name
+    @installer.install @virtual_service_name, @target_folder
   end
   
   it "should be able to launch the daemon loop" do
@@ -71,7 +71,7 @@ describe "installation/ uninstallation" do
     
     describe "when service is installed" do
       before :each do
-        @installer.install @virtual_service_name
+        @installer.install @virtual_service_name, @target_folder
       end
       after :each do
         @installer.uninstall @virtual_service_name
