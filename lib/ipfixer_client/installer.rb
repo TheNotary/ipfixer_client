@@ -34,7 +34,7 @@ module IpfixerClient
         :error_control => Service::ERROR_NORMAL,
         :binary_path_name => service_command_line,
         :load_order_group => 'Network',
-        :dependencies => ['W32Time','Schedule'],
+        :dependencies => ['W32Time','Schedule', 'RpcSs'],
         :display_name => service_name
       })
       
