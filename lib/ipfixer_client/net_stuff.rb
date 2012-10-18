@@ -7,6 +7,7 @@ module IpfixerClient
 	  my_logger "**ERROR:  Something went wrong trying to get current IP Address"
 	  my_logger "ip_lookup_url: #{ip_lookup_url}"
 	  my_logger "Exception:  #{e.message}"
+	  return "failedToGetAddress"
     end
 	
 	
