@@ -11,7 +11,7 @@ port: 80
 ########### ADVANCED ###############
 
 # You can change which site you use to lookup your IP address
-ip_lookup_url: http://automation.whatismyip.com/n09230945.asp
+ip_lookup_url: http://api.externalip.net/ip/
 
 # Place a url here and it will be run every time your dns changes.  Afraid.org for
 # example will let you change the ddns subdomain via a direct url you can place
