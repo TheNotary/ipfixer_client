@@ -1,5 +1,16 @@
-Ah, the old ipfixer client.  It will install to c:/it/ipfixer
-It basically copies everything in lib/ to that directory.  
-It will register a service with the windows machine it's installed in.  Uninstall will reverse the operation.  
+Ah, the old ipfixer client to be run on a windows machine.  
+
+use `$  ipfixer install` to install the windows service on your system.  It will prompt for a server to post the IP address to, you know what to do there I hope.  
+
+You'll have to manually start the service the first time.
+
 
 A configuration file can be created... at c:/it/ipfixer/ipfixer.conf
+
+
+ToDo:
+-Add error handling for when the IP Address isn't returning a valid IP (I think it just mysteriously crashes)
+-Add error/ usability handling if PORT or SERVER isn't specified in the yaml.  I think those constants need to get set to nil in that case explicitly, otherwise it will crash mysteriously...
+-Add a command to start the windows service you lazy bum!
+-Consider creating a rails engine and actually sharing this code instead of being a douche!
+
