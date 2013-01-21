@@ -27,11 +27,11 @@ module IpfixerClient
   
   # POST /ipfixes
   # { "ipfix": { "host":"Host Name", "ip":"192.168.0.1" } }
-  def self.post_ip(host_name, ip)
+  def self.post_ip(host_name, ip, token = "secret pass")
     username = 'test'
     password = 'testing'
     
-    server = IP_FIXER_HUB
+    server = IP_FIXER_HUB.gsub(/^https?:\/\//, '')
     port = PORT
     path = '/ipfixes.json'
   
@@ -41,7 +41,7 @@ module IpfixerClient
     req.content_type = 'application/json'  # specify json
   
     #req.basic_auth username, password                          # TODO:  Sort this out down the road
-    json_string = "{ 'ipfix': { 'host': '#{host_name}', 'ip': '#{ip}' } }"
+    json_string = "{ 'ipfix': { 'host': '#{host_name}', 'ip': '#{ip}', 'token': #{token} } }"
     req.body = json_string.gsub("'", '"')        # json doesn't accept the single quote symbol
     
     

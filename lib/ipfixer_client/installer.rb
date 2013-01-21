@@ -92,7 +92,7 @@ module IpfixerClient
     # this method prompts the user for a few pieces of information
     def prompt_for_information
       target_server = prompt_for_target_server
-      port = prompt_for_port
+      port = prompt_for_port((target_server =~ /^https:\/\//).nil? "80" : "443")
       ddns_update_url = prompt_for_ddns_url
       
       config = {'target_server' => target_server, 
@@ -104,7 +104,7 @@ module IpfixerClient
     def prompt_for_installation_folder
       puts "Please specify an installation directory, or hit enter for default 'c:\\it\\ipfixer'"
       input = STDIN.gets.chomp
-    
+
       if input == ""
         return 'c:\it\ipfixer'
       else
@@ -124,13 +124,13 @@ module IpfixerClient
       end
     end
     
-    def prompt_for_port
+    def prompt_for_port(default_port = "80")
       puts "Please specify a port"
-      puts "[80]"
+      puts "[#{default_port}]"
       input = STDIN.gets.chomp
       
       if input == ""
-        return nil
+        return default_port
       else
         return input.to_i
       end
