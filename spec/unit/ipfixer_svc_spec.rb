@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "IpFixer Svc" do
   
-  it "should work", :current => true do
+  it "should work", :current => true do  # for debuging the daemon apparently...
     d = IpfixerClient::DemoDaemon.new
     # d.service_main  #  only run this once... else it will run for ever and your tests can't pass
     #binding.pry
