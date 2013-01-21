@@ -21,57 +21,59 @@ module IpfixerClient
   STANDARD_INTERVAL = 500
   
   begin
-  	require 'rubygems'
-  	require 'win32/daemon'
-  	require 'socket'
-  	require 'net/http' 
-  	require 'fileutils'
+    require 'rubygems'
+    require 'win32/daemon'
+    require 'socket'
+    require 'net/http' 
+    require 'fileutils'
   
-  	include Win32
+    include Win32
   
-  	class DemoDaemon < Daemon
-  		
-  		def service_main
-  			IpfixerClient.create_the_log_folder
-  			host_name = Socket.gethostname
-  			last_ip = ''
-  			
-  			while running?
-  				
-  				current_ip = IpfixerClient.get_ip_address(IP_LOOKUP_URL)
-				if IpfixerClient.invalid_ip?(current_ip)
-					sleep STANDARD_INTERVAL
-					redo 
-  				end
-				
-  				if current_ip != last_ip
-  					IpfixerClient.tell_ddns_our_new_ip(DDNS_UPDATE_URL) unless DDNS_UPDATE_URL.nil?
-  					
-  					post_result = IpfixerClient.post_ip(host_name, current_ip)
-  					if post_result == true
-  						last_ip = current_ip
-  						IpfixerClient.my_logger "Successfully posted IP to mother server..."
-  					else
-  						IpfixerClient.my_logger "ERROR: Problem uploading new IP Address."
-  						IpfixerClient.my_logger "  current_ip: #{current_ip},  last_ip: #{last_ip}, post_result: #{post_result}"
-  						sleep LONG_DURATION
-  					end
-  				else
-  					IpfixerClient.my_logger "#{Time.now}:  No change in IP, #{current_ip}"
-  				end
-  				
-  				#my_logger "Service is running #{Time.now}:  #{host_name}"
-  				sleep STANDARD_INTERVAL
-  			end
-  		end
-  
-  		def service_stop
-  			File.open(LOG_FILE, "a"){ |f| f.puts "***Service stopped #{Time.now}" }
-  			exit!  # the guy I took the code from might have found the exit! command useful... I can't find a use for it.
-  		end
-  	end
-  
-  	
+    class DemoDaemon < Daemon
+      
+      def service_main
+        IpfixerClient.create_the_log_folder
+        host_name = Socket.gethostname
+        last_ip = ''
+        
+        while running?
+          
+          current_ip = IpfixerClient.get_ip_address(IP_LOOKUP_URL)
+          if IpfixerClient.invalid_ip?(current_ip)
+            my_logger "**ERROR:  Recieved an invalid ip."
+            my_logger "  current_ip:  #{current_ip}"
+            sleep STANDARD_INTERVAL
+            redo 
+          end
+        
+          if current_ip != last_ip
+            IpfixerClient.tell_ddns_our_new_ip(DDNS_UPDATE_URL) unless DDNS_UPDATE_URL.nil?
+            
+            post_result = IpfixerClient.post_ip(host_name, current_ip)
+            if post_result == true
+              last_ip = current_ip
+              IpfixerClient.my_logger "Successfully posted IP to mother server..."
+            else
+              IpfixerClient.my_logger "ERROR: Problem uploading new IP Address."
+              IpfixerClient.my_logger "  current_ip: #{current_ip},  last_ip: #{last_ip}, post_result: #{post_result}"
+              sleep LONG_DURATION
+            end
+          else
+            IpfixerClient.my_logger "#{Time.now}:  No change in IP, #{current_ip}"
+          end
+          
+          #my_logger "Service is running #{Time.now}:  #{host_name}"
+          sleep STANDARD_INTERVAL
+        end
+      end
+
+      def service_stop
+        File.open(LOG_FILE, "a"){ |f| f.puts "***Service stopped #{Time.now}" }
+        exit!  # the guy I took the code from might have found the exit! command useful... I can't find a use for it.
+      end
+    end
+
+
   rescue Exception => err
     IpfixerClient.my_logger "I ACTUALLY HAD A DAEMON ERROR!!! err=#{err}"
     File.open(LOG_FILE,'a+'){ |f| f.puts " ***Daemon failure #{Time.now} err=#{err} " }

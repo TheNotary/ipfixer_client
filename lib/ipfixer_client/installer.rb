@@ -165,7 +165,7 @@ module IpfixerClient
     def update_yml_file(target_folder, config)
       return if config.nil?
       
-	  
+    
       target_server = config['target_server']
       port = config['port']
       ddns_update_url = config['ddns_update_url']
