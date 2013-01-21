@@ -1,16 +1,64 @@
 Ah, the old ipfixer client to be run on a windows machine.  
 
-use `$  ipfixer install` to install the windows service on your system.  It will prompt for a server to post the IP address to, you know what to do there I hope.  
+==Fresh Install Sequence (~winxp or winvista)==
 
-You'll have to manually start the service the first time.
+1)  Install git (just to download)
+http://git-scm.com/download/win
+
+2)  Install ruby and then devkit 
+http://rubyinstaller.org/downloads/
+
+Devkit:  Extract to c:/devkit and then run c:/devkit/msys.bat
 
 
-A configuration file can be created... at c:/it/ipfixer/ipfixer.conf
+    $  cd /c/devkit
+    $  ruby dk.rb init; ruby dk.rb install
+
+
+3)  Clone the repo to desired location
+
+    $  cd dev  # make a directory for development...
+    $  git clone https://github.com/TheNotary/ipfixer_client.git
+    $  cd ipfixer_client
+
+4)  Install bundler, and then install the bundle for this gem
+
+    $  gem install ruby-debug19 # due to bugs, do this...
+    # it will fail, but that's fine and allows us to install debugger-linecache thereafter...
+    # maybe it just needs ruby-debug-base19-0.11.25??
+    $  gem install bundler
+    $  bundle install
+
+
+5)  Install the gem intself
+
+    $  bundle exec rake install
+
+
+6)  Install the windows service (run cmd as admin on vista... win_key -> 'cmd' -> Ctrl+shft+enter)
+
+    $  ipfixer install
+
+It will prompt you to enter: 
+  -An ipfixes server (I'll make the rails generator shortly and put it online)
+  -A port on which your server runs
+  -An optional dynamic dns URL that it will GET when ever it detects an IP change
+  -Someday, a security token that allows you to authenticate with your ipfixer server
+
+A configuration file can be created... at `c:/it/ipfixer/ipfixer.conf`  It can be modified at any time.  
+
+7)  Now start the service using computer management.  (sry, i'm in a rush...)
+
+
+
+
+
+
 
 
 ToDo:
 -Add error handling for when the IP Address isn't returning a valid IP (I think it just mysteriously crashes)
--Add error/ usability handling if PORT or SERVER isn't specified in the yaml.  I think those constants need to get set to nil in that case explicitly, otherwise it will crash mysteriously...
+-Add error/ usability handling if PORT or SERVER isn't specified in the yaml.  
 -Add a command to start the windows service you lazy bum!
--Consider creating a rails engine and actually sharing this code instead of being a douche!
-
+-Consider creating a rails engine and actually sharing this code!
+-Add security token to be read from the yaml file
