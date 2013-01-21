@@ -6,7 +6,13 @@ module IpfixerClient
     config_file = get_config_file config_file_path
     
     conf_contents = config_file.read
-    config = YAML.load_file(config_file)
+    
+    begin
+      config = YAML.load_file(config_file)
+    rescue Exception => e
+      File.open(LOG_FILE,'a+'){ |f| f.puts " ***YAML FILE PROBLEM DETECTED, The file was likely malformed... Check on it, or delete it and reinstall."; f.puts e.message }
+      exit!
+    end
     
     return config
   end

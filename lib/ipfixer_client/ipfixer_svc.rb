@@ -2,12 +2,11 @@ module IpfixerClient
   # http://stackoverflow.com/questions/163497/running-a-ruby-program-as-a-windows-service
   # Use the register
   #
-  # $ gem install win32-service
+  LOG_FILE = "C:\\it\\logs\\ipfixer.log"
+  LONG_DURATION = 1000
+  STANDARD_INTERVAL = 500
   
-  # allows us to read yaml files
-  # load "config_stuff.rb" # requires 'yaml'
   config = get_configuration_settings
-  
   
   # Point this at your hub
   IP_FIXER_HUB = config["target_server"].nil? ? nil : config["target_server"].dup                          # '192.168.1.1'
@@ -15,10 +14,15 @@ module IpfixerClient
   IP_LOOKUP_URL = config["ip_lookup_url"].nil? ? nil : config["ip_lookup_url"].dup                         # 'http://automation.whatismyip.com/n09230945.asp'
   DDNS_UPDATE_URL = config["ddns_update_url"].nil? ? nil : config["ddns_update_url"].dup
   
-  LOG_FILE = "C:\\it\\logs\\ipfixer.log"
+  if IP_FIXER_HUB.nil? || IP_LOOKUP_URL.nil?
+    File.open(LOG_FILE,'a+') do |f|
+      f.puts " ***YAML FILE PROBLEM DETECTED, IP_FIXER_HUB or IP_LOOKUP_URL was nil.  You can't run this service with out a server to contact, or a way of looking up your IP: " 
+      f.puts "#{IP_FIXER_HUB} ... #{IP_LOOKUP_URL}" 
+      f.puts "Check your conf file at c:\\it\\ipfixer\\conf\\conf.yml"
+    end
+    exit!
+  end
   
-  LONG_DURATION = 1000
-  STANDARD_INTERVAL = 500
   
   begin
     require 'rubygems'
