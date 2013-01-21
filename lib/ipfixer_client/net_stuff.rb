@@ -41,7 +41,7 @@ module IpfixerClient
     req.content_type = 'application/json'  # specify json
   
     #req.basic_auth username, password                          # TODO:  Sort this out down the road
-    json_string = "{ 'ipfix': { 'host': '#{host_name}', 'ip': '#{ip}', 'token': #{token} } }"
+    json_string = "{ 'ipfix': { 'host': '#{host_name}', 'ip': '#{ip}', 'token': '#{token}' } }"
     req.body = json_string.gsub("'", '"')        # json doesn't accept the single quote symbol
     
     
