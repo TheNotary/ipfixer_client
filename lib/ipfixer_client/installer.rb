@@ -92,7 +92,7 @@ module IpfixerClient
     # this method prompts the user for a few pieces of information
     def prompt_for_information
       target_server = prompt_for_target_server
-      port = prompt_for_port((target_server =~ /^https:\/\//).nil? "80" : "443")
+      port = prompt_for_port((target_server =~ /^https:\/\//).nil? ? "80" : "443")
       ddns_update_url = prompt_for_ddns_url
       
       config = {'target_server' => target_server, 
