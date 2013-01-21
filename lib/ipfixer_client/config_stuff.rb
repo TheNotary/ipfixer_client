@@ -22,6 +22,6 @@ module IpfixerClient
   def self.default_config_settings
     return {'target_server' => "192.168.0.11", 
       "port" => 80, 
-      "ip_lookup_url" => "http://automation.whatismyip.com/n09230945.asp"}
+      "ip_lookup_url" => "http://api.externalip.net/ip/"}
   end
 end
