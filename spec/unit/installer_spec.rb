@@ -16,6 +16,7 @@ describe "installation/ uninstallation" do
     @installer.stub!(:prompt_for_target_server).and_return(nil)
     @installer.stub!(:prompt_for_port).and_return(nil)
     @installer.stub!(:prompt_for_ddns_url).and_return(nil)
+    @installer.stub!(:prompt_for_security_token).and_return(nil)
   end
   
   after :each do
@@ -24,6 +25,7 @@ describe "installation/ uninstallation" do
     @installer.unstub!(:prompt_for_target_server)
     @installer.unstub!(:prompt_for_port)
     @installer.unstub!(:prompt_for_ddns_url)
+    @installer.unstub!(:prompt_for_security_token)
   end
   
   
