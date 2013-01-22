@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
   
-  s.add_development_dependency('linecache19', '0.5.12') # this needed so windows machine doesn't try to install latest linecache and fail.
+  #s.add_development_dependency('linecache19', '0.5.12') # this needed so windows machine doesn't try to install latest linecache and fail.
   s.add_dependency 'thor'
   s.add_dependency 'win32-service'
   
