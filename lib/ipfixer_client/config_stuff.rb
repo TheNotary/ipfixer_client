@@ -28,6 +28,7 @@ module IpfixerClient
   def self.default_config_settings
     return {'target_server' => "192.168.0.11", 
       "port" => 80, 
-      "ip_lookup_url" => "http://api.externalip.net/ip/"}
+      "ip_lookup_url" => "http://api.externalip.net/ip/",
+      "security_token" => "secret pass"}
   end
 end

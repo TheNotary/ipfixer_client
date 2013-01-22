@@ -94,10 +94,12 @@ module IpfixerClient
       target_server = prompt_for_target_server
       port = prompt_for_port((target_server =~ /^https:\/\//).nil? ? "80" : "443")
       ddns_update_url = prompt_for_ddns_url
+      security_token = prompt_for_security_token
       
       config = {'target_server' => target_server, 
         'port' => port, 
-        'ddns_update_url' => ddns_update_url}
+        'ddns_update_url' => ddns_update_url,
+        'security_token' => security_token }
       return config
     end
     
@@ -145,6 +147,17 @@ module IpfixerClient
         return nil
       else
         return input
+      end
+    end
+    
+    def prompt_for_security_token
+      puts "If you'd like, you can specify a security token that ipfixer will use to authenticate with the ipfixes server"
+      puts "ex:  'secret pass'"
+      input = STDIN.gets.chomp
+      if input == ""
+        "secret pass"
+      else
+        input
       end
     end
     

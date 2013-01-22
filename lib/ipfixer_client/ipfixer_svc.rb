@@ -13,6 +13,7 @@ module IpfixerClient
   PORT = config["port"].nil? ? "80" : config["port"].to_s.dup                                              # "3000"
   IP_LOOKUP_URL = config["ip_lookup_url"].nil? ? nil : config["ip_lookup_url"].dup                         # 'http://automation.whatismyip.com/n09230945.asp'
   DDNS_UPDATE_URL = config["ddns_update_url"].nil? ? nil : config["ddns_update_url"].dup
+  SECURITY_TOKEN = config["security_token"].nil? ? nil : config["security_token"].dub
   
   if IP_FIXER_HUB.nil? || IP_LOOKUP_URL.nil?
     File.open(LOG_FILE,'a+') do |f|
@@ -53,7 +54,7 @@ module IpfixerClient
           if current_ip != last_ip
             IpfixerClient.tell_ddns_our_new_ip(DDNS_UPDATE_URL) unless DDNS_UPDATE_URL.nil?
             
-            post_result = IpfixerClient.post_ip(host_name, current_ip)
+            post_result = IpfixerClient.post_ip(host_name, current_ip, SECURITY_TOKEN)
             if post_result == true
               last_ip = current_ip
               IpfixerClient.my_logger "Successfully posted IP to mother server..."
