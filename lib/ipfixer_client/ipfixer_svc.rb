@@ -13,7 +13,7 @@ module IpfixerClient
   PORT = config["port"].nil? ? "80" : config["port"].to_s.dup                                              # "3000"
   IP_LOOKUP_URL = config["ip_lookup_url"].nil? ? nil : config["ip_lookup_url"].dup                         # 'http://automation.whatismyip.com/n09230945.asp'
   DDNS_UPDATE_URL = config["ddns_update_url"].nil? ? nil : config["ddns_update_url"].dup
-  SECURITY_TOKEN = config["security_token"].nil? ? nil : config["security_token"].dub
+  SECURITY_TOKEN = config["security_token"].nil? ? nil : config["security_token"].dup
   
   if IP_FIXER_HUB.nil? || IP_LOOKUP_URL.nil?
     File.open(LOG_FILE,'a+') do |f|
