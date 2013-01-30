@@ -9,8 +9,8 @@ module IpfixerClient
       my_logger "Exception:  #{e.message}"
       return "failedToGetAddress"
     end
-  
-  
+
+
     if http_response.code == "200"
       return http_response.body
     else
@@ -57,7 +57,7 @@ module IpfixerClient
     my_logger "  Response:  #{response}"
     my_logger "  Req body:  #{req.body}"
     
-    return true if response.code == "200"
+    return true if response.code == "200" || response.code == "201"
     return response.code
   end
   
