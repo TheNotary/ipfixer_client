@@ -44,6 +44,7 @@ module IpfixerClient
         last_ip = ''
         
         while running?
+          methods_used_in_daemon?
           
           current_ip = IpfixerClient.get_ip_address(IP_LOOKUP_URL)
           if IpfixerClient.invalid_ip?(current_ip)
@@ -77,6 +78,10 @@ module IpfixerClient
       def service_stop
         File.open(LOG_FILE, "a"){ |f| f.puts "***Service stopped #{Time.now}" }
         exit!  # the guy I took the code from might have found the exit! command useful... I can't find a use for it.  Wait.. I think it can't stop if you leave it out now...
+      end
+      
+      def methods_used_in_daemon?
+        IpfixerClient.my_logger "You can definately use methods"
       end
     end
 
