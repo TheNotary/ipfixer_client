@@ -44,28 +44,13 @@ module IpfixerClient
         last_ip = ''
         
         while running?
-          methods_used_in_daemon?
           
           current_ip = IpfixerClient.get_ip_address(IP_LOOKUP_URL)
-          if IpfixerClient.invalid_ip?(current_ip)
-            my_logger "**ERROR:  Recieved an invalid ip."
-            my_logger "  current_ip:  #{current_ip}"
-            sleep STANDARD_INTERVAL
-            redo 
-          end
-        
-          if current_ip != last_ip
-            IpfixerClient.tell_ddns_our_new_ip(DDNS_UPDATE_URL) unless DDNS_UPDATE_URL.nil?
-            
-            post_result = IpfixerClient.post_ip(host_name, current_ip, SECURITY_TOKEN)
-            if post_result == true
-              last_ip = current_ip
-              IpfixerClient.my_logger "Successfully posted IP to mother server... #{current_ip}"
-            else
-              IpfixerClient.my_logger "ERROR: Problem uploading new IP Address."
-              IpfixerClient.my_logger "  current_ip: #{current_ip},  last_ip: #{last_ip}, post_result: #{post_result}"
-              sleep LONG_DURATION
-            end
+          handle_invalid_ip and redo if IpfixerClient.invalid_ip?(current_ip)
+          ip_changed = current_ip != last_ip
+          
+          if ip_changed
+            last_ip = handle_ip_change(host_name, current_ip, last_ip)
           else
             IpfixerClient.my_logger "#{Time.now}:  No change in IP, #{current_ip}" if DEBUG_MODE
           end
@@ -80,9 +65,34 @@ module IpfixerClient
         exit!  # the guy I took the code from might have found the exit! command useful... I can't find a use for it.  Wait.. I think it can't stop if you leave it out now...
       end
       
-      def methods_used_in_daemon?
-        IpfixerClient.my_logger "You can definately use methods"
+      def handle_invalid_ip
+        my_logger "**ERROR:  Recieved an invalid ip."
+        my_logger "  current_ip:  #{current_ip}"
+        sleep STANDARD_INTERVAL
+        true
       end
+      
+      def handle_ip_change(host_name, current_ip, last_ip)
+        IpfixerClient.tell_ddns_our_new_ip(DDNS_UPDATE_URL) unless DDNS_UPDATE_URL.nil?
+            
+        post_result = IpfixerClient.post_ip(host_name, current_ip, SECURITY_TOKEN)
+        if post_result == true
+          last_ip = current_ip
+          IpfixerClient.my_logger "Successfully posted IP to mother server... #{current_ip}"
+        else
+          handle_failed_ip_post(current_ip, last_ip, post_result)
+        end
+        
+        last_ip
+      end
+      
+      def handle_failed_ip_post(current_ip, last_ip, post_result)
+        IpfixerClient.my_logger "ERROR: Problem uploading new IP Address."
+        IpfixerClient.my_logger "  current_ip: #{current_ip},  last_ip: #{last_ip}, post_result: #{post_result}"
+        sleep LONG_DURATION
+      end
+      
+      
     end
 
 

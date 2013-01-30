@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ipfixer_client (0.0.1)
+    ipfixer_client (0.0.2)
       thor
       win32-service
 
