@@ -1,4 +1,4 @@
-==Feauture version 0.0.?==
+==Future version 0.0.?==
 -Allow ipfixer to work on linux and mac machines too!!!
 -Allow ipfixer_svc to cooperate with watchdog_listener for increased remote administration capabilities!
 -Add a command to start the windows service you lazy bum!
