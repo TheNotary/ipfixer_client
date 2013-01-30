@@ -48,17 +48,3 @@ It will prompt you to enter:
 A configuration file can be created... at `c:/it/ipfixer/ipfixer.conf`  It can be modified at any time.  
 
 7)  Now start the service using computer management.  (sry, i'm in a rush...)
-
-
-
-
-
-
-
-
-ToDo:
--Add error handling for when the IP Address isn't returning a valid IP (I think it just mysteriously crashes)
--Add error/ usability handling if PORT or SERVER isn't specified in the yaml.  
--Add a command to start the windows service you lazy bum!
--Consider creating a rails engine and actually sharing this code!
--Add security token to be read from the yaml file
