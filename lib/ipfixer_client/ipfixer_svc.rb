@@ -15,7 +15,7 @@ module IpfixerClient
   DDNS_UPDATE_URL = config["ddns_update_url"].nil? ? nil : config["ddns_update_url"].dup
   SECURITY_TOKEN = config["security_token"].nil? ? nil : config["security_token"].dup
   DEBUG_MODE = config["debug"].nil? || config["debug"] == false ? false : true
-  DEBUG_MODE = true   # I am hardcoding debug mode to be true since I'm still observing the app (I will neglect to come back and remove this, fyi)
+  #DEBUG_MODE = true
   
   if IP_FIXER_HUB.nil? || IP_LOOKUP_URL.nil?
     File.open(LOG_FILE,'a+') do |f|
