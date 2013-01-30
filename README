@@ -1,4 +1,14 @@
-Ah, the old ipfixer client to be run on a windows machine.  
+Ah, the old ipfixer client to be run on a windows machine...
+
+Have you ever wanted to keep track of one or more remote machines?  Yet their IP addresses are always subject to change?  Well this gem is designed to work with the ipfixer_server to store it's latest IP address in a remotely accessible rails application.  
+
+The ipfixer_service runs on windows machines as a service (so it's always running as long as the PC is on, even if you're logged out).  You can view a list of currently running services by right clicking "My Computer" and selecting "manage".  Then go to...
+
+Services and Applications -> Services
+
+And you will see a list of services currently installed on your PC.  Following the below procedure will install a service named "ipfixer_svc"
+
+
 
 ==Fresh Install Sequence (~winxp or winvista)==
 
