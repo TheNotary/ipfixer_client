@@ -19,3 +19,7 @@ ip_lookup_url: http://api.externalip.net/ip/
 # ddns_update_url: http://www.example.com/up_my_ip_stored_on_your_server
 
 ddns_update_url: 
+
+
+# there's also the debug mode, set debug to true to see more output in the log file located at c:\it\logs\ipfixer.log
+# debug: true
