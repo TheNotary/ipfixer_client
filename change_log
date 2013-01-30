@@ -1,14 +1,21 @@
 ==Feauture version 0.0.?==
 -Allow ipfixer to work on linux and mac machines too!!!
 -Allow ipfixer_svc to cooperate with watchdog_listener for increased remote administration capabilities!
-
+-Add a command to start the windows service you lazy bum!
 
 ==Version 0.0.2==
+Major:
 -Added DEBUG_MODE to the conf
 -Added an optional security_token to the conf
--Made it work happily ipfix servers returning a status code of 201 or 200.  
 
+
+Minor:
+-Made it work happily ipfix servers returning a status code of 201 or 200.  
+-Add error handling for when the IP Address isn't returning a valid IP (I think it just mysteriously crashes)
+-Add error/ usability handling if PORT or SERVER isn't specified in the yaml. 
+ 
 
 ==version 0.0.1==
 
 Built the app.  This version spans many months, I think even years.  I didn't think about change logs that far back, but am starting to now...  The early version so of 0.0.1 didn't work; the latest version of 0.0.1, worked and was bumpted to version 0.0.2 to give me some practice...
+
