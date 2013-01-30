@@ -1,0 +1,14 @@
+==Feauture version 0.0.?==
+-Allow ipfixer to work on linux and mac machines too!!!
+-Allow ipfixer_svc to cooperate with watchdog_listener for increased remote administration capabilities!
+
+
+==Version 0.0.2==
+-Added DEBUG_MODE to the conf
+-Added an optional security_token to the conf
+-Made it work happily ipfix servers returning a status code of 201 or 200.  
+
+
+==version 0.0.1==
+
+Built the app.  This version spans many months, I think even years.  I didn't think about change logs that far back, but am starting to now...  The early version so of 0.0.1 didn't work; the latest version of 0.0.1, worked and was bumpted to version 0.0.2 to give me some practice...
