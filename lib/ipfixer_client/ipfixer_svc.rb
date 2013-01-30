@@ -14,6 +14,8 @@ module IpfixerClient
   IP_LOOKUP_URL = config["ip_lookup_url"].nil? ? nil : config["ip_lookup_url"].dup                         # 'http://automation.whatismyip.com/n09230945.asp'
   DDNS_UPDATE_URL = config["ddns_update_url"].nil? ? nil : config["ddns_update_url"].dup
   SECURITY_TOKEN = config["security_token"].nil? ? nil : config["security_token"].dup
+  DEBUG_MODE = config["debug"].nil? || config["debug"] == false ? false : true
+  DEBUG_MODE = true   # I am hardcoding debug mode to be true since I'm still observing the app (I will neglect to come back and remove this, fyi)
   
   if IP_FIXER_HUB.nil? || IP_LOOKUP_URL.nil?
     File.open(LOG_FILE,'a+') do |f|
@@ -57,14 +59,14 @@ module IpfixerClient
             post_result = IpfixerClient.post_ip(host_name, current_ip, SECURITY_TOKEN)
             if post_result == true
               last_ip = current_ip
-              IpfixerClient.my_logger "Successfully posted IP to mother server..."
+              IpfixerClient.my_logger "Successfully posted IP to mother server... #{current_ip}"
             else
               IpfixerClient.my_logger "ERROR: Problem uploading new IP Address."
               IpfixerClient.my_logger "  current_ip: #{current_ip},  last_ip: #{last_ip}, post_result: #{post_result}"
               sleep LONG_DURATION
             end
           else
-            IpfixerClient.my_logger "#{Time.now}:  No change in IP, #{current_ip}"
+            IpfixerClient.my_logger "#{Time.now}:  No change in IP, #{current_ip}" if DEBUG_MODE
           end
           
           #my_logger "Service is running #{Time.now}:  #{host_name}"

@@ -50,25 +50,29 @@ module IpfixerClient
       my_logger "FAILURE TO POST TO ADDRESS:  Check if address and port are operational."
       return false
     end
-  
-    my_logger "DEBUGGER:  In Post_IP"
-    my_logger "  host_name:  #{host_name}"
-    my_logger "  ip:         #{ip}"
-    my_logger "  Response:  #{response}"
-    my_logger "  Req body:  #{req.body}"
+    
+    if DEBUG_MODE
+      my_logger "DEBUGGER:  In Post_IP"
+      my_logger "  host_name:  #{host_name}"
+      my_logger "  ip:         #{ip}"
+      my_logger "  Response:  #{response}"
+      my_logger "  Req body:  #{req.body}"
+    end
     
     return true if response.code == "200" || response.code == "201"
     return response.code
   end
   
   def self.tell_ddns_our_new_ip(ddns_update_url)
-  begin
-    http_response = Net::HTTP.get_response(URI.parse(ddns_update_url))
-    my_logger "Sent msg to ddns... response code was...#{http_response.code}.   #{Time.now}"
+    begin
+      http_response = Net::HTTP.get_response(URI.parse(ddns_update_url))
+      
+      my_logger "Sent msg to ddns... response code was...#{http_response.code}.   #{Time.now}" if DEBUG_MODE
+      
     rescue
-    my_logger "Exception occured whil trying to tell_ddns_our_new_ip..."
-    my_logger "Url was #{ddns_update_url}"
-  end
+      my_logger "Exception occured whil trying to tell_ddns_our_new_ip..."
+      my_logger "Url was #{ddns_update_url}"
+    end
   
     if http_response.code == "200"
       return true
