@@ -5,6 +5,12 @@ describe "IpFixer Svc" do
   before :each do
     @d = IpfixerClient::DemoDaemon.new
     @d.stub!(:sleep).and_return(nil)
+    @d.stub!(:my_logger).and_return(nil)
+  end
+  
+  after :each do
+    @d.unstub!(:sleep)
+    @d.unstub!(:my_logger)
   end
   
   it "should work" do  # for debuging the daemon apparently...
@@ -25,6 +31,6 @@ describe "IpFixer Svc" do
   end
   
   it "should work", :current => true do
-    binding.pry
+    #binding.pry
   end
 end

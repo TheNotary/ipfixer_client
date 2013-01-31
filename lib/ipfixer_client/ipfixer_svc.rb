@@ -9,6 +9,7 @@ module IpfixerClient
   
   begin
     class DemoDaemon < Daemon  # http://stackoverflow.com/questions/163497/running-a-ruby-program-as-a-windows-service
+      #extend IpfixerClient::Logger
       
       def service_main
         host_name, last_ip = init_service
@@ -19,9 +20,11 @@ module IpfixerClient
           ip_changed = current_ip != last_ip
           
           if ip_changed
+            
             last_ip = handle_ip_change(host_name, current_ip, last_ip)
+            my_logger "got here"
           else
-            IpfixerClient.my_logger "#{Time.now}:  No change in IP, #{current_ip}" if DEBUG_MODE
+            my_logger "#{Time.now}:  No change in IP, #{current_ip}" if DEBUG_MODE
           end
           
           #my_logger "Service is running #{Time.now}:  #{host_name}"
@@ -61,8 +64,8 @@ module IpfixerClient
       end
 
       def handle_invalid_ip(current_ip)
-        IpfixerClient.my_logger "**ERROR:  Recieved an invalid ip."
-        IpfixerClient.my_logger "  current_ip:  #{current_ip}"
+        my_logger "**ERROR:  Recieved an invalid ip."
+        my_logger "  current_ip:  #{current_ip}"
         sleep STANDARD_INTERVAL
         true
       end
@@ -73,7 +76,7 @@ module IpfixerClient
         post_result = IpfixerClient.post_ip(host_name, current_ip, SECURITY_TOKEN)
         if post_result == true
           last_ip = current_ip
-          IpfixerClient.my_logger "Successfully posted IP to mother server... #{current_ip}"
+          my_logger "Successfully posted IP to mother server... #{current_ip}"
         else
           handle_failed_ip_post(current_ip, last_ip, post_result)
         end
@@ -82,19 +85,23 @@ module IpfixerClient
       end
 
       def handle_failed_ip_post(current_ip, last_ip, post_result)
-        IpfixerClient.my_logger "ERROR: Problem uploading new IP Address."
-        IpfixerClient.my_logger "  current_ip: #{current_ip},  last_ip: #{last_ip}, post_result: #{post_result}"
+        my_logger "ERROR: Problem uploading new IP Address."
+        my_logger "  current_ip: #{current_ip},  last_ip: #{last_ip}, post_result: #{post_result}"
         sleep LONG_DURATION
       end
 
-      def return_hello
-        IpfixerClient.my_logger "hello"
+      def return_hello # for testing that funcs with the my_logger works... begging to be removed...
+        my_logger "hello"
         sleep 1000
         "hello"
       end
 
       def sleep(x) # for stub testing...
         Kernel.sleep x
+      end
+      
+      def my_logger(text)
+        IpfixerClient.my_logger(text)
       end
 
     end

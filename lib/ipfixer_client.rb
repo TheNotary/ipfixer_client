@@ -13,13 +13,13 @@ STANDARD_INTERVAL = 500
 config = IpfixerClient.get_configuration_settings
 
 # Point this at your hub
-IP_FIXER_HUB = config["target_server"].nil? ? nil : config["target_server"].dup                          # '192.168.1.1'
+IP_FIXER_HUB = config["target_server"].nil? ? nil : config["target_server"].dup.gsub(/^https?:\/\//, '') # '192.168.1.1'
 PORT = config["port"].nil? ? "80" : config["port"].to_s.dup                                              # "3000"
 IP_LOOKUP_URL = config["ip_lookup_url"].nil? ? nil : config["ip_lookup_url"].dup                         # 'http://automation.whatismyip.com/n09230945.asp'
 DDNS_UPDATE_URL = config["ddns_update_url"].nil? ? nil : config["ddns_update_url"].dup
 SECURITY_TOKEN = config["security_token"].nil? ? nil : config["security_token"].dup
-DEBUG_MODE = config["debug"].nil? || config["debug"] == false ? false : true
-#DEBUG_MODE = true
+#DEBUG_MODE = config["debug"].nil? || config["debug"] == false ? false : true
+DEBUG_MODE = true
 
 module IpfixerClient
   extend Logger
