@@ -85,15 +85,6 @@ module IpfixerClient
   
   
   
-################## This stuff should be split off into another file named "logger_stuff" or something...
-  
-  def self.my_logger(text)
-    File.open(LOG_FILE, "a"){ |f| f.puts text }
-  end
-  
-  def self.create_the_log_folder
-    logs_folder = "C:\\it\\logs"
-    FileUtils.mkdir_p(logs_folder) unless File.directory?(logs_folder) 
-  end
+
   
 end

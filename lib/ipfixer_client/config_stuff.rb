@@ -1,5 +1,7 @@
+require 'yaml'
+require 'fileutils'
+
 module IpfixerClient
-  require 'yaml'
   
   def self.get_configuration_settings(config_file_path = "C:\\it\\ipfixer\\conf\\config.yml")
     return default_config_settings unless File.exists? config_file_path

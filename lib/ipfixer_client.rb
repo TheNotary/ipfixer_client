@@ -1,10 +1,12 @@
 require 'ipfixer_client/config_stuff'
+require 'ipfixer_client/logger'
 require 'ipfixer_client/net_stuff'
 require 'ipfixer_client/version'
 require 'ipfixer_client/installer.rb'
 require 'ipfixer_client/ipfixer_svc'
 
 LOG_FILE = "C:\\it\\logs\\ipfixer.log"
+LOG_FOLDER = File.dirname LOG_FILE
 LONG_DURATION = 1000
 STANDARD_INTERVAL = 500
 
@@ -19,11 +21,9 @@ SECURITY_TOKEN = config["security_token"].nil? ? nil : config["security_token"].
 DEBUG_MODE = config["debug"].nil? || config["debug"] == false ? false : true
 #DEBUG_MODE = true
 
-
-
-
-
 module IpfixerClient
+  extend Logger
+  
   def self.help
     puts "This is ipfixer_client, a little client... see the docs"
   end

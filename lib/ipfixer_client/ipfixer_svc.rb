@@ -1,28 +1,19 @@
+require 'rubygems'
+require 'win32/daemon'
+require 'socket'
+require 'net/http' 
+require 'fileutils'
+
 module IpfixerClient
-  # http://stackoverflow.com/questions/163497/running-a-ruby-program-as-a-windows-service
-  # Use the register
-  #
-
-
-  
+  include Win32
   
   begin
-    require 'rubygems'
-    require 'win32/daemon'
-    require 'socket'
-    require 'net/http' 
-    require 'fileutils'
-  
-    include Win32
-  
-    class DemoDaemon < Daemon
+    class DemoDaemon < Daemon  # http://stackoverflow.com/questions/163497/running-a-ruby-program-as-a-windows-service
       
       def service_main
-        
         host_name, last_ip = init_service
 
         while running?
-
           current_ip = IpfixerClient.get_ip_address(IP_LOOKUP_URL)
           handle_invalid_ip(current_ip) and redo if IpfixerClient.invalid_ip?(current_ip)
           ip_changed = current_ip != last_ip
@@ -43,10 +34,11 @@ module IpfixerClient
         exit!  # the guy I took the code from might have found the exit! command useful... I can't find a use for it.  Wait.. I think it can't stop if you leave it out now...
       end
       
+      # Does initialization preparations for the service.  
+      # returns an array of [host_name, '']
       def init_service
         handle_missing_specifications and exit! if missing_specifications_detected
         
-        IpfixerClient.create_the_log_folder
         host_name = Socket.gethostname
         last_ip = ''
         [host_name, last_ip]
@@ -56,11 +48,7 @@ module IpfixerClient
       # an IP_FIXER_HUB specified in the config.  If those aren't 
       # found, we need to exit
       def missing_specifications_detected
-        if IP_FIXER_HUB.nil? || IP_LOOKUP_URL.nil?
-          true
-        else
-          false
-        end
+        (IP_FIXER_HUB.nil? || IP_LOOKUP_URL.nil?) ? true : false
       end
       
       def handle_missing_specifications
@@ -105,7 +93,7 @@ module IpfixerClient
         "hello"
       end
 
-      def sleep(x)
+      def sleep(x) # for stub testing...
         Kernel.sleep x
       end
 
@@ -113,7 +101,6 @@ module IpfixerClient
 
 
   rescue Exception => err
-    IpfixerClient.my_logger "I ACTUALLY HAD A DAEMON ERROR!!! err=#{err}"
     File.open(LOG_FILE,'a+'){ |f| f.puts " ***Daemon failure #{Time.now} err=#{err} " }
     raise
   end
