@@ -2,29 +2,8 @@ module IpfixerClient
   # http://stackoverflow.com/questions/163497/running-a-ruby-program-as-a-windows-service
   # Use the register
   #
-  LOG_FILE = "C:\\it\\logs\\ipfixer.log"
-  LONG_DURATION = 1000
-  STANDARD_INTERVAL = 500
-  
-  config = get_configuration_settings
-  
-  # Point this at your hub
-  IP_FIXER_HUB = config["target_server"].nil? ? nil : config["target_server"].dup                          # '192.168.1.1'
-  PORT = config["port"].nil? ? "80" : config["port"].to_s.dup                                              # "3000"
-  IP_LOOKUP_URL = config["ip_lookup_url"].nil? ? nil : config["ip_lookup_url"].dup                         # 'http://automation.whatismyip.com/n09230945.asp'
-  DDNS_UPDATE_URL = config["ddns_update_url"].nil? ? nil : config["ddns_update_url"].dup
-  SECURITY_TOKEN = config["security_token"].nil? ? nil : config["security_token"].dup
-  DEBUG_MODE = config["debug"].nil? || config["debug"] == false ? false : true
-  #DEBUG_MODE = true
-  
-  if IP_FIXER_HUB.nil? || IP_LOOKUP_URL.nil?
-    File.open(LOG_FILE,'a+') do |f|
-      f.puts " ***YAML FILE PROBLEM DETECTED, IP_FIXER_HUB or IP_LOOKUP_URL was nil.  You can't run this service with out a server to contact, or a way of looking up your IP: " 
-      f.puts "#{IP_FIXER_HUB} ... #{IP_LOOKUP_URL}" 
-      f.puts "Check your conf file at c:\\it\\ipfixer\\conf\\conf.yml"
-    end
-    exit!
-  end
+
+
   
   
   begin
@@ -39,9 +18,8 @@ module IpfixerClient
     class DemoDaemon < Daemon
       
       def service_main
-        IpfixerClient.create_the_log_folder
-        host_name = Socket.gethostname
-        last_ip = ''
+        
+        host_name, last_ip = init_service
 
         while running?
 
@@ -63,6 +41,35 @@ module IpfixerClient
       def service_stop
         File.open(LOG_FILE, "a"){ |f| f.puts "***Service stopped #{Time.now}" }
         exit!  # the guy I took the code from might have found the exit! command useful... I can't find a use for it.  Wait.. I think it can't stop if you leave it out now...
+      end
+      
+      def init_service
+        handle_missing_specifications and exit! if missing_specifications_detected
+        
+        IpfixerClient.create_the_log_folder
+        host_name = Socket.gethostname
+        last_ip = ''
+        [host_name, last_ip]
+      end
+      
+      # To run, the daemon needs to have an IP Lookup address, and
+      # an IP_FIXER_HUB specified in the config.  If those aren't 
+      # found, we need to exit
+      def missing_specifications_detected
+        if IP_FIXER_HUB.nil? || IP_LOOKUP_URL.nil?
+          true
+        else
+          false
+        end
+      end
+      
+      def handle_missing_specifications
+        File.open(LOG_FILE,'a+') do |f|
+          f.puts " ***YAML FILE PROBLEM DETECTED, IP_FIXER_HUB or IP_LOOKUP_URL was nil.  You can't run this service with out a server to contact, or a way of looking up your IP: " 
+          f.puts "#{IP_FIXER_HUB} ... #{IP_LOOKUP_URL}" 
+          f.puts "Check your conf file at c:\\it\\ipfixer\\conf\\conf.yml"
+        end
+        true
       end
 
       def handle_invalid_ip(current_ip)
