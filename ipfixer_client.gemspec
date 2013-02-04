@@ -21,7 +21,9 @@ Gem::Specification.new do |s|
   
   #s.add_development_dependency('linecache19', '0.5.12') # this needed so windows machine doesn't try to install latest linecache and fail.
   s.add_dependency 'thor'
-  s.add_dependency 'win32-service'
+  s.add_dependency 'win32-service' if s.platform.to_s == 'x86-mswin32'
+  s.add_development_dependency 'win32console' if s.platform.to_s == 'x86-mswin32'
+  s.add_development_dependency 'wdm' if s.platform.to_s == 'x86-mswin32'
   
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec'
@@ -29,7 +31,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'debugger'
   #s.add_development_dependency 'guard'
   s.add_development_dependency 'guard-rspec'
-  s.add_development_dependency 'wdm'
+  
   #s.add_development_dependency 'autotest'
-  s.add_development_dependency 'win32console'
+  
 end
