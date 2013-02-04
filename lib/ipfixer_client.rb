@@ -46,4 +46,12 @@ module IpfixerClient
     i.uninstall
   end
   
+  def self.start
+    if IpfixerClient::Installer.service_installed?
+      puts "We can install"
+    else
+      puts "The service is not yet installed, please run the command `ipfixer install`"
+    end
+  end
+  
 end
