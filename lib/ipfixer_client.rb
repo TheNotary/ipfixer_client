@@ -1,3 +1,11 @@
+LOG_FILE = "C:\\it\\logs\\ipfixer.log"
+LOG_FOLDER = File.dirname LOG_FILE
+LONG_DURATION = 1000
+STANDARD_INTERVAL = 500
+DEBUG_MODE = true
+WINDOWS = RUBY_PLATFORM =~ /mingw32/ ? true : false
+LINUX = RUBY_PLATFORM =~ /linux/ ? true : false
+
 require 'ipfixer_client/config_stuff'
 require 'ipfixer_client/logger'
 require 'ipfixer_client/net_stuff'
@@ -5,10 +13,6 @@ require 'ipfixer_client/version'
 require 'ipfixer_client/installer.rb'
 require 'ipfixer_client/ipfixer_svc'
 
-LOG_FILE = "C:\\it\\logs\\ipfixer.log"
-LOG_FOLDER = File.dirname LOG_FILE
-LONG_DURATION = 1000
-STANDARD_INTERVAL = 500
 
 config = IpfixerClient.get_configuration_settings
 
@@ -19,7 +23,7 @@ IP_LOOKUP_URL = config["ip_lookup_url"].nil? ? nil : config["ip_lookup_url"].dup
 DDNS_UPDATE_URL = config["ddns_update_url"].nil? ? nil : config["ddns_update_url"].dup
 SECURITY_TOKEN = config["security_token"].nil? ? nil : config["security_token"].dup
 #DEBUG_MODE = config["debug"].nil? || config["debug"] == false ? false : true
-DEBUG_MODE = true
+
 
 module IpfixerClient
   extend Logger

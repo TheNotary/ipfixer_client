@@ -1,7 +1,7 @@
 module IpfixerClient
   require 'yaml'
   require 'rubygems'
-  require 'win32/service'  # gem install win32-service
+  require 'win32/service' if RUBY_PLATFORM =~ /mingw32/
   require 'rbconfig'
   require 'fileutils'
   
@@ -9,7 +9,7 @@ module IpfixerClient
   SERVICE_DESC = 'A service that helps keep track of remote infrastructure.'
 
   class Installer
-    include Win32
+    include Win32 if RUBY_PLATFORM =~ /mingw32/
     
     def initialize
     end
@@ -25,30 +25,39 @@ module IpfixerClient
       
       create_installation_files(target_folder, config)
       
-      # Create a new service
-      Service.create({
-        :service_name => service_name,
-        :service_type => Service::WIN32_OWN_PROCESS,
-        :description => SERVICE_DESC,
-        :start_type => Service::AUTO_START,
-        :error_control => Service::ERROR_NORMAL,
-        :binary_path_name => service_command_line,
-        :load_order_group => 'Network',
-        :dependencies => ['W32Time','Schedule', 'RpcSs'],
-        :display_name => service_name
-      })
+      if WINDOWS   
+        # Create a new service
+        Service.create({
+          :service_name => service_name,
+          :service_type => Service::WIN32_OWN_PROCESS,
+          :description => SERVICE_DESC,
+          :start_type => Service::AUTO_START,
+          :error_control => Service::ERROR_NORMAL,
+          :binary_path_name => service_command_line,
+          :load_order_group => 'Network',
+          :dependencies => ['W32Time','Schedule', 'RpcSs'],
+          :display_name => service_name
+        })
+      elsif LINUX
+        # FIXME:  Add a linux routine
+        
+      end
       
       
       #`sc start ipfixer_svc`
     end
     
+    def get_target_folder
+      return ""  # FIXME: logic
+    end
     
     def uninstall(service_name = SERVICE_NAME)
       # stop the service if it's started
       # stop if service_started? service_name
       # if the service is marked for deletion, do nothing here
       #return if service_marked_for_deletion? service_name
-      Service.delete(service_name) if service_installed? service_name
+      Service.delete(service_name) if service_installed? service_name if WINDOWS
+      # FIXME:  write linux logic
     end
     
     def start(service_name = SERVICE_NAME)
@@ -75,7 +84,7 @@ module IpfixerClient
     
     # The finds out where the ruby interpretr is on the system.
     def get_ruby_interpreter_path
-      File.join(Config::CONFIG["bindir"], Config::CONFIG["ruby_install_name"])
+      File.join(RbConfig::CONFIG["bindir"], RbConfig::CONFIG["ruby_install_name"])
     end
     
     # This is how I get the path of the ipfixer script in the bin/ folder
@@ -162,15 +171,18 @@ module IpfixerClient
     end
     
     def service_installed?(service_name)
-      `sc query #{service_name}` =~ /FAILED 1060/i ? false : true
+      return `sc query #{service_name}` =~ /FAILED 1060/i ? false : true if WINDOWS
+      return true if LINUX   # FIXME:  write logic
     end
     
     def service_started?(service_name)
-      `sc query #{service_name} | grep STATE` =~ /STOPPED/i ? false : true
+      return `sc query #{service_name} | grep STATE` =~ /STOPPED/i ? false : true if WINDOWS
+      return true if LINUX   # FIXME:  write logic
     end
     
     def service_marked_for_deletion?(service_name)
-      `sc query #{service_name} | grep STATE` =~ /STOPPED/i ? false : true
+      return `sc query #{service_name} | grep STATE` =~ /STOPPED/i ? false : true if WINDOWS
+      return true if LINUX   # FIXME:  write logic
     end
     
     # writes a new yaml file out of the data entered, unless there was no data entered, 
@@ -182,14 +194,14 @@ module IpfixerClient
       target_server = config['target_server']
       port = config['port']
       ddns_update_url = config['ddns_update_url']
-      
-      config = YAML.load_file("C:\\it\\ipfixer\\conf\\config.yml")
+      require 'pry';binding.pry
+      config = YAML.load_file(target_folder + '/conf/config.yml')  # "C:\\it\\ipfixer\\conf\\config.yml"
       
       config['target_server'] = target_server unless target_server.nil?
       config['port'] = port unless port.nil?
       config['ddns_update_url'] = ddns_update_url unless ddns_update_url.nil?
       
-      File.open(target_folder + '\conf\config.yml', "w") {|f| f.write(config.to_yaml) }
+      File.open(target_folder + '/conf/config.yml', "w") {|f| f.write(config.to_yaml) }
     end
       
   end

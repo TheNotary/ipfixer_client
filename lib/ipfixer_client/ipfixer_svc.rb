@@ -1,11 +1,17 @@
 require 'rubygems'
-require 'win32/daemon'
+require 'win32/daemon' if RUBY_PLATFORM =~ /mingw32/
+require 'daemons' if RUBY_PLATFORM =~ /linux/
+if RUBY_PLATFORM =~ /linux/
+  class Daemon
+    
+  end
+end
 require 'socket'
 require 'net/http' 
 require 'fileutils'
 
 module IpfixerClient
-  include Win32
+  include Win32 if RUBY_PLATFORM =~ /mingw32/
   
   begin
     class DemoDaemon < Daemon  # http://stackoverflow.com/questions/163497/running-a-ruby-program-as-a-windows-service

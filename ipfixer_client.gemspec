@@ -19,11 +19,13 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
   
-  #s.add_development_dependency('linecache19', '0.5.12') # this needed so windows machine doesn't try to install latest linecache and fail.
   s.add_dependency 'thor'
-  s.add_dependency 'win32-service' if s.platform.to_s == 'x86-mswin32'
-  s.add_development_dependency 'win32console' if s.platform.to_s == 'x86-mswin32'
-  s.add_development_dependency 'wdm' if s.platform.to_s == 'x86-mswin32'
+  s.add_dependency 'win32-service' if RUBY_PLATFORM =~ /mingw32/
+  s.add_development_dependency 'win32console' if RUBY_PLATFORM =~ /mingw32/
+  s.add_development_dependency 'wdm' if RUBY_PLATFORM =~ /mingw32/
+  
+  s.add_dependency 'daemons' if RUBY_PLATFORM =~ /linux/
+  
   
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec'

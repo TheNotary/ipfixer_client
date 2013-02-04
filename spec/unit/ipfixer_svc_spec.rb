@@ -30,7 +30,7 @@ describe "IpFixer Svc" do
     a.length.should eq 2
   end
   
-  it "should work", :current => true do
+  it "should work" do
     #binding.pry
   end
 end
