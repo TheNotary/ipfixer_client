@@ -9,7 +9,6 @@ module IpfixerClient
   
   begin
     class DemoDaemon < Daemon  # http://stackoverflow.com/questions/163497/running-a-ruby-program-as-a-windows-service
-      #extend IpfixerClient::Logger
       
       def service_main
         host_name, last_ip = init_service
