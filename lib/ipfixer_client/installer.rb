@@ -5,8 +5,6 @@ module IpfixerClient
   require 'rbconfig'
   require 'fileutils'
   
-  SERVICE_NAME = 'ipfixer_svc'
-  SERVICE_DESC = 'A service that helps keep track of remote infrastructure.'
 
   class Installer
     include Win32 if RUBY_PLATFORM =~ /mingw32/
@@ -171,8 +169,13 @@ module IpfixerClient
     end
     
     def service_installed?(service_name)
-      return `sc query #{service_name}` =~ /FAILED 1060/i ? false : true if WINDOWS
-      return true if LINUX   # FIXME:  write logic
+      if WINDOWS
+        return `sc query #{service_name}` =~ /FAILED 1060/i ? false : true
+      end
+      
+      if LINUX   # FIXME:  write logic
+        return true
+      end
     end
     
     def service_started?(service_name)
