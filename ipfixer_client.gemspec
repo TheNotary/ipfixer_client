@@ -19,18 +19,27 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
   
-  #s.add_development_dependency('linecache19', '0.5.12') # this needed so windows machine doesn't try to install latest linecache and fail.
+  #s.add_development_dependency('linecache19', '0.5.12') # this is a required dependency that can't install through gem or bundle unless via `gem install ruby
   s.add_dependency 'thor'
-  s.add_dependency 'win32-service' if s.platform.to_s == 'x86-mswin32'
-  s.add_development_dependency 'win32console' if s.platform.to_s == 'x86-mswin32'
-  s.add_development_dependency 'wdm' if s.platform.to_s == 'x86-mswin32'
+  s.add_dependency 'win32-service' if RUBY_PLATFORM =~ /mingw32/
+  s.add_development_dependency 'win32console' if RUBY_PLATFORM == /mingw32/
+  s.add_development_dependency 'wdm' if RUBY_PLATFORM == /mingw32/
   
-  s.add_development_dependency 'rake'
+  s.add_development_dependency('rake', '0.9.2')
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'pry'
-  s.add_development_dependency 'debugger'
+  
+  #s.add_development_dependency('rake-compiler', '0.7.9')
+  #s.add_development_dependency('archive-tar-minitar', '0.5.2')  # this might be another secret dependency
+  #s.add_development_dependency('debugger-ruby_core_source', '1.1.3') # dep dep
+  #s.add_development_dependency('ruby_core_source', '0.1.5') # SECRET DEPENDENCY OF LINECACHE!!! MAYBE...
+  #s.add_development_dependency('ruby-debug19') # installing manually, this gem is able to install linecache19 successfully 
+  #s.add_development_dependency('debugger-linecache', '1.1.2') # depdep
+  
+  #s.add_development_dependency('linecache19', '0.5.12') # dep dep, very problematic one...
+  #s.add_development_dependency('debugger', '1.2.0')     # is this even a dependency anymore!?!?!?!????
   #s.add_development_dependency 'guard'
-  s.add_development_dependency 'guard-rspec'
+  #s.add_development_dependency 'guard-rspec'
   
   #s.add_development_dependency 'autotest'
   
