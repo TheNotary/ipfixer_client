@@ -25,6 +25,11 @@ class IpfixerClientRunner < Thor
   def client_svc
     IpfixerClient.client_svc
   end
+  
+  desc "start", "This command will start the service for you.  Before it will work, you must install the service via `ipfixer install`"
+  def start
+    IpfixerClient.start
+  end
 end
 
 IpfixerClientRunner.start

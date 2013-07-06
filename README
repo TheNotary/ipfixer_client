@@ -15,7 +15,7 @@ And you will see a list of services currently installed on your PC.  Following t
 1)  Install git (just to download)
 http://git-scm.com/download/win
 
-2)  Install ruby and then devkit 
+2)  Install ruby 1.9.3 and then devkit (use the tdm devkit for 1.9.x!!)
 http://rubyinstaller.org/downloads/
 
 Devkit:  Extract to c:/devkit and then run c:/devkit/msys.bat

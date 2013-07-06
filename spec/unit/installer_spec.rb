@@ -1,9 +1,11 @@
 require 'spec_helper'
+require 'fileutils'
 
 describe "installation/ uninstallation" do
   before :all do
     @virtual_service_name = "aaa-deleteme-test-service-ipfixer"
     @target_folder = "/tmp/it/ipfixer"
+    #FileUtils.mkdir_p @target_folder
     delete_all_testing_files(@target_folder)
   end
   after :all do

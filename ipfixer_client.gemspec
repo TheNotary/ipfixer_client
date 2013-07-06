@@ -19,11 +19,13 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
   
-  #s.add_development_dependency('linecache19', '0.5.12') # this is a required dependency that can't install through gem or bundle unless via `gem install ruby
   s.add_dependency 'thor'
   s.add_dependency 'win32-service' if RUBY_PLATFORM =~ /mingw32/
-  s.add_development_dependency 'win32console' if RUBY_PLATFORM == /mingw32/
-  s.add_development_dependency 'wdm' if RUBY_PLATFORM == /mingw32/
+  s.add_development_dependency 'win32console' if RUBY_PLATFORM =~ /mingw32/
+  s.add_development_dependency 'wdm' if RUBY_PLATFORM =~ /mingw32/
+  
+  s.add_dependency 'daemons' if RUBY_PLATFORM =~ /linux/
+
   
   s.add_development_dependency('rake', '0.9.2')
   s.add_development_dependency 'rspec'
@@ -37,10 +39,9 @@ Gem::Specification.new do |s|
   #s.add_development_dependency('debugger-linecache', '1.1.2') # depdep
   
   #s.add_development_dependency('linecache19', '0.5.12') # dep dep, very problematic one...
-  #s.add_development_dependency('debugger', '1.2.0')     # is this even a dependency anymore!?!?!?!????
+  s.add_development_dependency 'debugger' if RUBY_PLATFORM =~ /linux/
   #s.add_development_dependency 'guard'
   #s.add_development_dependency 'guard-rspec'
   
   #s.add_development_dependency 'autotest'
-  
 end
