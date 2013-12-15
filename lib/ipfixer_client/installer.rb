@@ -197,7 +197,7 @@ module IpfixerClient
       target_server = config['target_server']
       port = config['port']
       ddns_update_url = config['ddns_update_url']
-      require 'pry';binding.pry
+      #require 'pry';binding.pry
       config = YAML.load_file(target_folder + '/conf/config.yml')  # "C:\\it\\ipfixer\\conf\\config.yml"
       
       config['target_server'] = target_server unless target_server.nil?
