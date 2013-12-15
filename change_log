@@ -3,6 +3,11 @@
 -Allow ipfixer_svc to cooperate with watchdog_listener for increased remote administration capabilities!
 -Add a command to start the windows service you lazy bum!
 
+==Version 0.0.3==
+Minor:
+-removed a binding.pry call in the installer.
+
+
 ==Version 0.0.2==
 Major:
 -Added DEBUG_MODE to the conf
