@@ -18,6 +18,10 @@ http://git-scm.com/download/win
 2)  Install ruby 1.9.3 and then devkit (use the tdm devkit for 1.9.x!!)
 http://rubyinstaller.org/downloads/
 
+    
+    rubyinstaller.exe /verysilent /tasks="addtk,assocfiles,modpath"
+
+
 Devkit:  Extract to c:/devkit and then run c:/devkit/msys.bat
 
 
